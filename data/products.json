@@ -1,0 +1,270 @@
+[
+  {
+    "id": "kovi-adt-300-enduro",
+    "category": "Мото",
+    "subcategory": "Ендуро",
+    "price": 2450,
+    "currency": "usd",
+    "name_ua": "Мотоцикл Kovi ADT 300 Enduro / Кросовий",
+    "name_en": "Motorcycle Kovi ADT 300 Enduro / Cross",
+    "description_ua": "Kovi ADT 300 — витривалий ендуро/кросовий мотоцикл для активного кермування. Маневрений, зручний у керуванні та готовий до бездоріжжя.",
+    "description_en": "Kovi ADT 300 is a durable enduro/cross motorcycle for active riders. Agile, easy to handle and ready for off-road.",
+    "images": [
+      "images/koviadt300.jpg",
+      "images/kovi.jpg",
+      "images/kovi_adt300_3.jpg"
+    ],
+    "specs": {
+      "ua": [],
+      "en": []
+    },
+    "benefits": {
+      "ua": [],
+      "en": []
+    }
+  },
+  {
+    "id": "crosser-tr4-800w-72v-20ah",
+    "name_ua": "Електроскутер/Електротрайк Crosser TR4 800W 72V 20Ah (трьохколісний)",
+    "name_en": "Electric Trike Crosser TR4 800W 72V 20Ah (three-wheeler)",
+    "price": 42000,
+    "currency": "грн",
+    "category": "Електро",
+    "subcategory": "",
+    "description_ua": "Crosser TR4 — комфортний трьохколісний електротранспорт для щоденних поїздок. Стабільний, зручний і безпечний у керуванні — чудовий вибір для міста та господарських задач.",
+    "description_en": "Crosser TR4 is a comfortable three-wheel electric vehicle for everyday rides. Stable, convenient and safe to handle — a great choice for city and utility use.",
+    "images": [
+      "images/crosser_tr4_1.jpg",
+      "images/traz.jpg",
+      "images/crosser_tr4_3.jpg"
+    ],
+    "specs": {
+      "ua": [
+        [
+          "Потужність",
+          "800W"
+        ],
+        [
+          "Напруга",
+          "72V"
+        ],
+        [
+          "Акумулятор",
+          "20Ah"
+        ],
+        [
+          "Колісність",
+          "3 (трьохколісний)"
+        ]
+      ],
+      "en": [
+        [
+          "Power",
+          "800W"
+        ],
+        [
+          "Voltage",
+          "72V"
+        ],
+        [
+          "Battery",
+          "20Ah"
+        ],
+        [
+          "Wheels",
+          "3 (three-wheeler)"
+        ]
+      ]
+    },
+    "benefits": {
+      "ua": [
+        "Висока стабільність та комфорт",
+        "Легке керування",
+        "Підходить для щоденних поїздок"
+      ],
+      "en": [
+        "High stability and comfort",
+        "Easy handling",
+        "Suitable for daily rides"
+      ]
+    }
+  },
+  {
+    "id": "koviadvance250",
+    "category": "Мото",
+    "subcategory": "Ендуро",
+    "price": 2100,
+    "currency": "usd",
+    "name_ua": "Мотоцикл Kovi Advance 250 21/18",
+    "name_en": "Motocycle Kovi Advance 250 21/18",
+    "description_ua": "Мотоцикл Kovi 250 ADVANCE 21/18\"\nНовий.\nПотужний та надійний.\n\n-Об'єм двигуна - 249 см³,\n- 171FMM, бензиновий, одноциліндровий, чотирьохклапанний;\n-Максимальна швидкість - ≥114 км/год,\n- Повітряне охолодження,\n- Електростартер,\n-Карбюратор Nibbi Racing NBR PWK32,\n- 6-ти ступінчаста КПП з багатодисковим зчепленням у масляній ванні, ланцюг;\n-Передні гальма - дискові із двопоршневим супортом, гідравлічні.\n-Задні -дискові із однопоршневим супортом, гідравлічні.\n-7,5 літрів бак.",
+    "description_en": "Kovi 250 ADVANCE 21/18\" motorcycle\nNew.\nPowerful and reliable.\n\n-Engine capacity - 249 cm³,\n- 171FMM, gasoline, single-cylinder, four-valve;\n-Maximum speed - ≥114 km/h,\n- Air cooling,\n- Electric starter,\n-Nibbi Racing NBR PWK32 carburetor,\n- 6-speed gearbox with multi-disc clutch in oil bath, chain;\n-Front brakes - disc with two-piston caliper, hydraulic.\n-Rear brakes - disc with single-piston caliper, hydraulic.\n-7.5 liter fuel tank.\n\nTranslated with DeepL.com (free version)",
+    "images": [
+      "images/kovi.jpg",
+      "images/kovik2.jpg",
+      "images/kovik3.jpg"
+    ],
+    "specs": {
+      "ua": [
+        [
+          "Основні характеристики",
+          ""
+        ],
+        [
+          "Об'єм двигуна - 198 см3,",
+          ""
+        ],
+        [
+          "- Бензиновий серії NRF, 4-х тактний, одноциліндровий;",
+          ""
+        ],
+        [
+          "-Максимальна швидкість - 137 км/год,",
+          ""
+        ],
+        [
+          "- водяне охолодження,",
+          ""
+        ],
+        [
+          "- Електронне запалювання,",
+          ""
+        ],
+        [
+          "- 6-ти ступінчаста трансмісія у масляній ванні,",
+          ""
+        ],
+        [
+          "-Алюмінієві легкосплавні з пофарбованим у чорний матовий колір дисками,",
+          ""
+        ],
+        [
+          "—12 (включаючи 2,5 літру резерву).",
+          ""
+        ]
+      ],
+      "en": [
+        [
+          "Kovi 250 ADVANCE 21/18\" motorcycle",
+          ""
+        ],
+        [
+          "New.",
+          ""
+        ],
+        [
+          "Powerful and reliable.",
+          ""
+        ],
+        [
+          "-Engine capacity - 249 cm³,",
+          ""
+        ],
+        [
+          "- 171FMM, gasoline, single-cylinder, four-valve;",
+          ""
+        ],
+        [
+          "-Maximum speed - ≥114 km/h,",
+          ""
+        ],
+        [
+          "- Air cooling,",
+          ""
+        ],
+        [
+          "- Electric starter,",
+          ""
+        ],
+        [
+          "-Nibbi Racing NBR PWK32 carburetor,",
+          ""
+        ],
+        [
+          "- 6-speed gearbox with multi-disc clutch in oil bath, chain;",
+          ""
+        ],
+        [
+          "-Front brakes - disc with two-piston caliper, hydraulic.",
+          ""
+        ],
+        [
+          "-Rear brakes - disc with single-piston caliper, hydraulic.",
+          ""
+        ],
+        [
+          "-7.5 liter fuel tank.",
+          ""
+        ],
+        [
+          "Translated with DeepL.com (free version)",
+          ""
+        ]
+      ]
+    },
+    "benefits": {
+      "ua": [],
+      "en": []
+    }
+  },
+  {
+    "id": "lifancr220",
+    "category": "Мото",
+    "subcategory": "Дорожні",
+    "price": 1900,
+    "currency": "usd",
+    "name_ua": "Мотоцикл Lifan cr220",
+    "name_en": "Motocycle Lifan cr220",
+    "description_ua": "",
+    "description_en": "",
+    "images": [
+      "images/lif.jpg",
+      "images/lif2.webp"
+    ],
+    "specs": {
+      "ua": [
+        [
+          "Основні характеристики",
+          ""
+        ],
+        [
+          "Об'єм двигуна - 198 см3,",
+          ""
+        ],
+        [
+          "- Бензиновий серії NRF, 4-х тактний, одноциліндровий;",
+          ""
+        ],
+        [
+          "-Максимальна швидкість - 137 км/год,",
+          ""
+        ],
+        [
+          "- водяне охолодження,",
+          ""
+        ],
+        [
+          "- Електронне запалювання,",
+          ""
+        ],
+        [
+          "- 6-ти ступінчаста трансмісія у масляній ванні,",
+          ""
+        ],
+        [
+          "-Алюмінієві легкосплавні з пофарбованим у чорний матовий колір дисками,",
+          ""
+        ],
+        [
+          "—12 (включаючи 2,5 літру резерву).",
+          ""
+        ]
+      ],
+      "en": []
+    },
+    "benefits": {
+      "ua": [],
+      "en": []
+    }
+  }
+]
