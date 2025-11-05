@@ -1,0 +1,119 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:'Montserrat',sans-serif;color:#222;background:#f6f7fb}
+
+.container{max-width:1200px;margin:0 auto;padding:32px 5%}
+
+/* Header */
+.site-header{position:sticky;top:0;background:#111;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;z-index:20;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.logo{color:#f1c40f;font-weight:700}
+.menu{list-style:none;display:flex;gap:18px;align-items:center;margin:0;padding:0}
+.menu>li{position:relative}
+.menu a{color:#fff;text-decoration:none;font-weight:600}
+.menu a:hover{color:#f1c40f}
+.menu .has-sub:hover .submenu{display:block}
+.submenu{display:none;position:absolute;top:100%;left:0;background:#fff;color:#111;min-width:220px;border-radius:12px;box-shadow:0 12px 28px rgba(0,0,0,.16);padding:8px}
+.submenu li{list-style:none}
+.submenu a{display:block;padding:10px 12px;color:#111;border-radius:10px}
+.submenu a:hover{background:#f6f7fb}
+
+@media (hover:none){
+  .menu .has-sub.tap .submenu{display:block}
+}
+
+/* Lang */
+.lang-switch button{margin-left:8px;border:none;border-radius:6px;padding:6px 10px;cursor:pointer;background:#fff}
+.lang-switch button:hover{background:#f1c40f;color:#111}
+
+/* Banner */
+.banner{position:relative;min-height:320px;background:linear-gradient(135deg,#0b1220 0%,#1c2a52 60%,#0b1220 100%);color:#fff;display:flex;align-items:center}
+.banner .inner{width:100%;padding:48px 5%}
+.banner h1{margin:0 0 12px;font-size:28px}
+.banner p{margin:0 0 18px;color:#d8e0ff}
+.banner .cta{display:flex;gap:10px;flex-wrap:wrap}
+.cta .btn{background:#fff;color:#111;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+.cta .btn:hover{background:#f1c40f}
+
+/* Category icons row */
+.cat-icons{display:flex;gap:12px;margin:18px 0;flex-wrap:wrap}
+.cat-btn{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #eee;border-radius:12px;padding:10px 12px;cursor:pointer;color:#444;box-shadow:0 6px 16px rgba(0,0,0,.06)}
+.cat-btn:hover{color:#111;border-color:#ddd}
+.cat-btn .ico{width:20px;height:20px;}
+
+/* --- PREMIUM SQUARE PRODUCT CARDS --- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px;margin-top:14px}
+.card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.12);transition:0.25s}
+.card:hover{transform:translateY(-6px) scale(1.03);box-shadow:0 12px 36px rgba(0,0,0,.16)}
+
+/* Фото 1:1 (crop) */
+.card .img{
+  width:100%;
+  aspect-ratio:1/1;
+  background:#eee;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.card .img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.card .body{padding:14px}
+.card h3{font-size:18px;margin:0 0 8px}
+.price{color:#e74c3c;font-size:18px;font-weight:700;margin-bottom:10px}
+.actions{display:flex;gap:10px}
+.btn{border:none;border-radius:10px;padding:10px 12px;cursor:pointer;font-weight:700}
+.btn-primary{background:#f1c40f;color:#111}
+.btn-dark{background:#111;color:#fff}
+a.btn{display:inline-block;text-align:center}
+
+/* Moto tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.tile{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.12)}
+.tile img,.tile svg{width:100%;height:160px;object-fit:cover;display:block}
+.tile .overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.55),rgba(0,0,0,.1));display:flex;align-items:flex-end;padding:12px}
+.tile .caption{color:#fff;font-weight:700;display:flex;align-items:center;gap:8px}
+.tile .caption .ico{width:18px;height:18px;color:#fff}
+.tile:hover .overlay{background:linear-gradient(0deg,rgba(0,0,0,.65),rgba(0,0,0,.2))}
+
+/* --- PREMIUM PRODUCT VIEW IMAGE --- */
+.product-view{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:start}
+.carousel{
+  position:relative;
+  width:100%;
+  max-width:650px;
+  aspect-ratio:1/1;
+  margin:auto;
+  background:#f2f2f2;
+  border-radius:18px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 8px 28px rgba(0,0,0,.14);
+}
+.carousel img{width:100%;height:100%;object-fit:cover}
+.car-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.4);color:#fff;border:none;border-radius:50%;width:42px;height:42px;cursor:pointer;transition:0.2s}
+.car-nav:hover{background:rgba(0,0,0,.6)}
+.car-prev{left:10px}
+.car-next{right:10px}
+
+@media (max-width:700px){
+  .product-view{grid-template-columns:1fr}
+  .carousel{max-width:100%;aspect-ratio:1/1;border-radius:14px}
+}
+
+.specs-table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 8px 18px rgba(0,0,0,.06)}
+.specs-table td{padding:10px 12px;border-bottom:1px solid #eee}
+.specs-table td:first-child{width:40%;color:#555}
+.benefits{margin-top:14px;background:#fff;padding:12px;border-radius:10px;box-shadow:0 8px 18px rgba(0,0,0,.06)}
+.benefits li{margin-left:20px;list-style:disc;margin-bottom:6px}
+
+footer{background:#111;color:#fff;text-align:center;padding:16px;margin-top:40px}
+.back-link{display:inline-block;margin-bottom:12px;text-decoration:none}
+.back-link:hover{text-decoration:underline}

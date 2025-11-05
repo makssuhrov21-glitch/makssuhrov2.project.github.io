@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Мото — Winner Znamyanka</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo">Winner Znamyanka</div>
+    <nav>
+      <ul class="menu" id="main-menu">
+        <li><a href="index.html#catalog" data-lang-uk="Каталог" data-lang-en="Catalog">Каталог</a></li>
+        <li class="has-sub"><a href="moto.html" data-lang-uk="Мото" data-lang-en="Moto">Мото ▾</a>
+          <ul class="submenu">
+            <li><a href="#ендуро">Ендуро</a></li>
+            <li><a href="#пітбайк">Пітбайк</a></li>
+            <li><a href="#дорожні">Дорожні</a></li>
+            <li><a href="#скутери">Скутери</a></li>
+          </ul>
+        </li>
+        <li><a href="index.html#catalog" data-filter="Агро">Агро</a></li>
+        <li><a href="index.html#catalog" data-filter="Вело">Вело</a></li>
+        <li><a href="index.html#catalog" data-filter="Електро">Електро</a></li>
+      </ul>
+    </nav>
+    <div class="lang-switch">
+      <button id="lang-uk">🇺🇦</button>
+      <button id="lang-en">🇬🇧</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 data-lang-uk="Мото — підкатегорії" data-lang-en="Moto — subcategories">Мото — підкатегорії</h1>
+    <div class="tiles">
+      <a class="tile" href="index.html#cat=Мото&sub=Ендуро">
+        <img src="images/tile_enduro.svg" alt="Ендуро">
+        <div class="overlay"><div class="caption"><svg viewBox="0 0 24 24" class="ico" xmlns="http://www.w3.org/2000/svg"><path d="M3 17a3 3 0 1 0 6 0H7a4 4 0 0 1 4-4h3l2-3h2l-2 3h2a4 4 0 0 1 4 4h-2a3 3 0 1 0-6 0h-4a3 3 0 1 0-6 0z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ендуро</span></div></div>
+      </a>
+      <a class="tile" href="index.html#cat=Мото&sub=Пітбайк">
+        <img src="images/tile_pitbike.svg" alt="Пітбайк">
+        <div class="overlay"><div class="caption"><svg viewBox="0 0 24 24" class="ico" xmlns="http://www.w3.org/2000/svg"><path d="M3 17a3 3 0 1 0 6 0H7a4 4 0 0 1 4-4h3l2-3h2l-2 3h2a4 4 0 0 1 4 4h-2a3 3 0 1 0-6 0h-4a3 3 0 1 0-6 0z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Пітбайк</span></div></div>
+      </a>
+      <a class="tile" href="index.html#cat=Мото&sub=Дорожні">
+        <img src="images/tile_road.svg" alt="Дорожні">
+        <div class="overlay"><div class="caption"><svg viewBox="0 0 24 24" class="ico" xmlns="http://www.w3.org/2000/svg"><path d="M3 17a3 3 0 1 0 6 0H7a4 4 0 0 1 4-4h3l2-3h2l-2 3h2a4 4 0 0 1 4 4h-2a3 3 0 1 0-6 0h-4a3 3 0 1 0-6 0z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Дорожні</span></div></div>
+      </a>
+      <a class="tile" href="index.html#cat=Мото&sub=Скутери">
+        <img src="images/tile_scooter.svg" alt="Скутери">
+        <div class="overlay"><div class="caption"><svg viewBox="0 0 24 24" class="ico" xmlns="http://www.w3.org/2000/svg"><path d="M3 17a3 3 0 1 0 6 0H7a4 4 0 0 1 4-4h3l2-3h2l-2 3h2a4 4 0 0 1 4 4h-2a3 3 0 1 0-6 0h-4a3 3 0 1 0-6 0z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Скутери</span></div></div>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <p data-lang-uk="Winner Znamyanka — ФОП. Всі права захищено."
+       data-lang-en="Winner Znamyanka — Sole Proprietorship. All rights reserved.">
+       Winner Znamyanka — ФОП. Всі права захищено.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Product — Winner Znamyanka</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo">Winner Znamyanka</div>
+    <nav>
+      <ul class="menu" id="main-menu">
+        <li><a href="index.html#catalog" data-lang-uk="Каталог" data-lang-en="Catalog">Каталог</a></li>
+        <li class="has-sub"><a href="moto.html">Мото ▾</a>
+          <ul class="submenu">
+            <li><a href="moto.html#ендуро">Ендуро</a></li>
+            <li><a href="moto.html#пітбайк">Пітбайк</a></li>
+            <li><a href="moto.html#дорожні">Дорожні</a></li>
+            <li><a href="moto.html#скутери">Скутери</a></li>
+          </ul>
+        </li>
+        <li><a href="index.html#catalog" data-filter="Агро">Агро</a></li>
+        <li><a href="index.html#catalog" data-filter="Вело">Вело</a></li>
+        <li><a href="index.html#catalog" data-filter="Електро">Електро</a></li>
+      </ul>
+    </nav>
+    <div class="lang-switch">
+      <button id="lang-uk">🇺🇦</button>
+      <button id="lang-en">🇬🇧</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <a href="index.html#catalog" class="back-link" data-lang-uk="← Назад до каталогу" data-lang-en="← Back to catalog">← Назад до каталогу</a>
+    <div id="product-view" class="product-view"></div>
+  </main>
+
+  <footer>
+    <p data-lang-uk="Winner Znamyanka — ФОП. Всі права захищено."
+       data-lang-en="Winner Znamyanka — Sole Proprietorship. All rights reserved.">
+       Winner Znamyanka — ФОП. Всі права захищено.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>window.__PRODUCT_PAGE__=true;</script>
+</body>
+</html>
