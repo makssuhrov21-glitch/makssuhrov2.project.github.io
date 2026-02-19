@@ -1,83 +1,313 @@
 [
   {
-    "id": "felicity-ess-lpbf-24v-200ah",
+    "id": "felicity-lpbf-24v-200ah",
     "category": "Світло",
     "subcategory": "АКБ",
     "price": 38800,
     "currency": "грн",
-    "name_ua": "Felicity ESS LPBF 24V 200Ah літієвий акумулятор",
-    "name_en": "Felicity ESS LPBF 24V 200Ah Lithium Battery",
-    "description_ua": "Літієвий акумулятор Felicity ESS LPBF 24V 200Ah — надійне рішення для систем резервного живлення, сонячних електростанцій та автономних систем.",
+    "name_ua": "Felicity ESS LPBF 24V 200Ah",
+    "name_en": "Felicity ESS LPBF 24V 200Ah",
+    "description_ua": "Літієвий акумулятор Felicity ESS LPBF 24V 200Ah — надійне рішення для систем резервного живлення, сонячних електростанцій та автономних систем. Технологія LiFePO4 забезпечує довгий термін служби та безпеку експлуатації.",
     "description_en": "Felicity ESS LPBF 24V 200Ah lithium battery — reliable solution for backup power systems and solar stations.",
-    "images": [
-      "images/feli.jpg",
-      "images/rw.jpg",
-      "images/tele.jpg"
-    ],
+    "images": ["images/feli.jpg", "images/rw.jpg", "images/tele.jpg"],
     "specs": {
       "ua": [
         ["Тип батареї", "Літієва (LiFePO4)"],
         ["Напруга", "24V"],
         ["Ємність", "200Ah"],
-        ["Призначення", "Резервне живлення / СЕС"]
+        ["Макс. струм заряду", "100A"],
+        ["Макс. струм розряду", "100A"],
+        ["Цикли", "6000+"],
+        ["Вага", "24 кг"],
+        ["Розміри", "517 x 492 x 260 мм"]
       ],
       "en": [
         ["Battery Type", "Lithium (LiFePO4)"],
         ["Voltage", "24V"],
         ["Capacity", "200Ah"],
-        ["Purpose", "Backup power / Solar systems"]
+        ["Max Charge Current", "100A"],
+        ["Max Discharge Current", "100A"],
+        ["Cycles", "6000+"],
+        ["Weight", "24 kg"],
+        ["Dimensions", "517 x 492 x 260 mm"]
       ]
     },
     "benefits": {
       "ua": [
-        "Довгий термін служби",
+        "Довгий термін служби — до 6000 циклів",
         "Швидка зарядка",
-        "Висока ефективність"
+        "Висока ефективність 98%",
+        "Вбудована BMS система захисту",
+        "Не потребує обслуговування",
+        "Працює при температурах від -20°C до +60°C"
       ],
       "en": [
-        "Long service life",
+        "Long service life - up to 6000 cycles",
         "Fast charging",
-        "High efficiency"
+        "98% High efficiency",
+        "Built-in BMS protection",
+        "Maintenance free",
+        "Operating temperature -20°C to +60°C"
       ]
     }
   },
   {
-    "id": "must-3-2kw-24v-125ah",
+    "id": "must-3-2kw-24v",
     "category": "Світло",
     "subcategory": "Інвертор",
     "price": 54000,
     "currency": "грн",
-    "name_ua": "ДБЖ зарядна станція інвертор Must 3.2 кВт 125Ah 24V",
-    "name_en": "Must 3.2kW 125Ah 24V Inverter Power Station",
-    "description_ua": "ДБЖ та зарядна станція Must 3.2 кВт 24V — потужний інвертор для резервного живлення дому або бізнесу.",
-    "description_en": "Must 3.2kW 24V inverter power station — powerful backup solution for home or business.",
-    "images": [
-      "images/must_3_2kw_1.jpg"
-    ],
+    "name_ua": "Must 3.2kW 24V Інвертор",
+    "name_en": "Must 3.2kW 24V Inverter",
+    "description_ua": "Потужний інвертор Must 3.2kW з чистою синусоїдою. Ідеальне рішення для резервного живлення будинку або офісу. Має вбудований зарядний пристрій та режим bypass.",
+    "description_en": "Must 3.2kW Pure Sine Wave Inverter. Perfect solution for home or office backup power.",
+    "images": ["images/must_3_2kw_1.jpg", "images/must_3_2kw_2.jpg"],
     "specs": {
       "ua": [
         ["Потужність", "3.2 кВт"],
+        ["Пікова потужність", "6.4 кВт"],
         ["Напруга", "24V"],
-        ["Ємність акумулятора", "125Ah"],
-        ["Тип", "Інвертор / ДБЖ"]
+        ["Тип", "Чиста синусоїда"],
+        ["ККД", "93%"],
+        ["Вхідна напруга", "230V AC"],
+        ["Частота", "50/60 Гц"],
+        ["Захист", "Від перевантаження, КЗ, перегріву"]
       ],
       "en": [
         ["Power", "3.2 kW"],
+        ["Peak Power", "6.4 kW"],
         ["Voltage", "24V"],
-        ["Battery Capacity", "125Ah"],
-        ["Type", "Inverter / UPS"]
+        ["Type", "Pure Sine Wave"],
+        ["Efficiency", "93%"],
+        ["Input Voltage", "230V AC"],
+        ["Frequency", "50/60 Hz"],
+        ["Protection", "Overload, Short circuit, Overheat"]
       ]
     },
     "benefits": {
       "ua": [
-        "Підходить для дому та бізнесу",
-        "Захист від перепадів напруги",
-        "Можливість роботи з акумуляторами"
+        "Чиста синусоїда",
+        "Вбудований зарядний пристрій",
+        "Автоматичне перемикання",
+        "РК дисплей",
+        "Тиха робота",
+        "Компактний розмір"
       ],
       "en": [
-        "Suitable for home and business",
-        "Voltage surge protection",
-        "Supports external batteries"
+        "Pure Sine Wave",
+        "Built-in charger",
+        "Automatic transfer",
+        "LCD display",
+        "Quiet operation",
+        "Compact size"
+      ]
+    }
+  },
+  {
+    "id": "hybrid-5kw-48v",
+    "category": "Світло",
+    "subcategory": "Гібридний",
+    "price": 85000,
+    "currency": "грн",
+    "name_ua": "Гібридний інвертор 5kW 48V",
+    "name_en": "Hybrid Inverter 5kW 48V",
+    "description_ua": "Гібридний інвертор з вбудованим MPPT контролером 100A. Підтримує роботу з сонячними панелями, мережею та акумуляторами. Ідеальне рішення для сонячних електростанцій.",
+    "description_en": "Hybrid inverter with 100A MPPT controller. Supports solar panels, grid and batteries.",
+    "images": ["images/hybrid.jpg"],
+    "specs": {
+      "ua": [
+        ["Потужність", "5 кВт"],
+        ["Пікова потужність", "10 кВт"],
+        ["Напруга", "48V"],
+        ["MPPT контролер", "100A 450V"],
+        ["Тип", "Гібридний"],
+        ["ККД", "95%"],
+        ["Режими", "Мережа/Сонце/АКБ"],
+        ["Паралельна робота", "До 6 шт"]
+      ],
+      "en": [
+        ["Power", "5 kW"],
+        ["Peak Power", "10 kW"],
+        ["Voltage", "48V"],
+        ["MPPT Controller", "100A 450V"],
+        ["Type", "Hybrid"],
+        ["Efficiency", "95%"],
+        ["Modes", "Grid/Solar/Battery"],
+        ["Parallel operation", "Up to 6 units"]
+      ]
+    },
+    "benefits": {
+      "ua": [
+        "Вбудований MPPT контролер",
+        "Робота з сонячними панелями",
+        "Безшумна робота",
+        "WiFi моніторинг",
+        "Пріоритет сонця",
+        "Можливість паралельної роботи"
+      ],
+      "en": [
+        "Built-in MPPT controller",
+        "Solar panel support",
+        "Silent operation",
+        "WiFi monitoring",
+        "Solar priority mode",
+        "Parallel operation support"
+      ]
+    }
+  },
+  {
+    "id": "volts-agm-12v-100ah",
+    "category": "Світло",
+    "subcategory": "АКБ",
+    "price": 12500,
+    "currency": "грн",
+    "name_ua": "Volts AGM 12V 100Ah",
+    "name_en": "Volts AGM 12V 100Ah",
+    "description_ua": "AGM акумулятор Volts 12V 100Ah для систем резервного живлення, ДБЖ та сонячних електростанцій. Не потребує обслуговування, безпечний та надійний.",
+    "description_en": "Volts AGM Battery 12V 100Ah for UPS and solar systems. Maintenance free.",
+    "images": ["images/volts.jpg"],
+    "specs": {
+      "ua": [
+        ["Тип", "AGM"],
+        ["Напруга", "12V"],
+        ["Ємність", "100Ah"],
+        ["Термін служби", "8-10 років"],
+        ["Цикли", "1200"],
+        ["Вага", "28 кг"],
+        ["Розміри", "330 x 171 x 220 мм"],
+        ["Діапазон температур", "-20°C до +50°C"]
+      ],
+      "en": [
+        ["Type", "AGM"],
+        ["Voltage", "12V"],
+        ["Capacity", "100Ah"],
+        ["Service life", "8-10 years"],
+        ["Cycles", "1200"],
+        ["Weight", "28 kg"],
+        ["Dimensions", "330 x 171 x 220 mm"],
+        ["Temperature range", "-20°C to +50°C"]
+      ]
+    },
+    "benefits": {
+      "ua": [
+        "Не потребує обслуговування",
+        "Висока надійність",
+        "Безпечний",
+        "Працює в будь-якому положенні",
+        "Швидкий заряд",
+        "Низький саморозряд"
+      ],
+      "en": [
+        "Maintenance free",
+        "High reliability",
+        "Safe operation",
+        "Any position operation",
+        "Fast charging",
+        "Low self-discharge"
+      ]
+    }
+  },
+  {
+    "id": "growatt-3000-spf",
+    "category": "Світло",
+    "subcategory": "Гібридний",
+    "price": 32000,
+    "currency": "грн",
+    "name_ua": "Growatt SPF 3000TL",
+    "name_en": "Growatt SPF 3000TL",
+    "description_ua": "Гібридний інвертор Growatt 3kW з MPPT контролером. Ідеальний вибір для дому. Підтримує роботу з акумуляторами та сонячними панелями.",
+    "description_en": "Growatt 3kW Hybrid Inverter with MPPT controller. Perfect for home use.",
+    "images": ["images/growatt.jpg"],
+    "specs": {
+      "ua": [
+        ["Потужність", "3 кВт"],
+        ["Пікова потужність", "6 кВт"],
+        ["Напруга", "24V"],
+        ["MPPT", "80A 450V"],
+        ["ККД", "93%"],
+        ["Вхід сонця", "до 450V"],
+        ["Захист", "IP21"],
+        ["Дисплей", "LCD + LED"]
+      ],
+      "en": [
+        ["Power", "3 kW"],
+        ["Peak Power", "6 kW"],
+        ["Voltage", "24V"],
+        ["MPPT", "80A 450V"],
+        ["Efficiency", "93%"],
+        ["Solar Input", "up to 450V"],
+        ["Protection", "IP21"],
+        ["Display", "LCD + LED"]
+      ]
+    },
+    "benefits": {
+      "ua": [
+        "Високий ККД",
+        "Надійний",
+        "Тиха робота",
+        "Зручне керування",
+        "Компактний",
+        "Доступна ціна"
+      ],
+      "en": [
+        "High efficiency",
+        "Reliable",
+        "Quiet operation",
+        "Easy control",
+        "Compact",
+        "Affordable price"
+      ]
+    }
+  },
+  {
+    "id": "victron-12v-100ah",
+    "category": "Світло",
+    "subcategory": "АКБ",
+    "price": 18500,
+    "currency": "грн",
+    "name_ua": "Victron AGM 12V 100Ah",
+    "name_en": "Victron AGM 12V 100Ah",
+    "description_ua": "Преміальний AGM акумулятор Victron Energy. Максимальна надійність та довговічність для вашої системи живлення.",
+    "description_en": "Premium Victron AGM battery. Maximum reliability for your power system.",
+    "images": ["images/victron.jpg"],
+    "specs": {
+      "ua": [
+        ["Тип", "AGM"],
+        ["Напруга", "12V"],
+        ["Ємність", "100Ah"],
+        ["Термін служби", "10-12 років"],
+        ["Цикли", "1500"],
+        ["Вага", "30 кг"],
+        ["Країна", "Німеччина"],
+        ["Гарантія", "2 роки"]
+      ],
+      "en": [
+        ["Type", "AGM"],
+        ["Voltage", "12V"],
+        ["Capacity", "100Ah"],
+        ["Service life", "10-12 years"],
+        ["Cycles", "1500"],
+        ["Weight", "30 kg"],
+        ["Country", "Germany"],
+        ["Warranty", "2 years"]
+      ]
+    },
+    "benefits": {
+      "ua": [
+        "Німецька якість",
+        "Довгий термін служби",
+        "Висока надійність",
+        "Преміальна якість",
+        "Гарантія 2 роки",
+        "Підходить для сонячних систем"
+      ],
+      "en": [
+        "German quality",
+        "Long service life",
+        "High reliability",
+        "Premium quality",
+        "2 year warranty",
+        "Perfect for solar"
       ]
     }
   }
