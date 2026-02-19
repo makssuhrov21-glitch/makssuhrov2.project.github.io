@@ -1,251 +1,523 @@
-// Global language
-let language = localStorage.getItem('site_lang') || 'uk';
-const VIBER_NUMBER = '+380995371400'; // TODO: set your number
+// Глобальні змінні
+let products = [];
+let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+let currentFilter = 'all';
+let currentLanguage = 'uk';
 
+const VIBER_NUMBER = '+380995371400';
+
+// DOM елементи
 const catalogGrid = document.getElementById('catalog-grid');
-const cartEl = document.getElementById('cart');
-const cartTotalsEl = document.getElementById('cart-totals');
-const checkoutBtn = document.getElementById('checkout-btn');
+const cartSidebar = document.getElementById('cartSidebar');
+const cartItems = document.getElementById('cartItems');
+const cartTotal = document.getElementById('cartTotal');
+const cartCount = document.getElementById('cartCount');
+const checkoutBtn = document.getElementById('checkoutBtn');
+const overlay = document.getElementById('overlay');
+const cartToggle = document.getElementById('cartToggle');
+const closeCart = document.getElementById('closeCart');
+const modalOverlay = document.getElementById('modalOverlay');
+const productModal = document.getElementById('productModal');
+const modalContent = document.getElementById('modalContent');
+const closeModal = document.getElementById('closeModal');
 
-// lang buttons
-const btnUk = document.getElementById('lang-uk');
-const btnEn = document.getElementById('lang-en');
-if(btnUk) btnUk.addEventListener('click', ()=> setLanguage('uk'));
-if(btnEn) btnEn.addEventListener('click', ()=> setLanguage('en'));
+// Завантаження товарів
+async function loadProducts() {
+  try {
+    const response = await fetch('data/products.json');
+    products = await response.json();
+    filterProducts('all');
+    animateStats();
+  } catch (error) {
+    console.error('Помилка завантаження:', error);
+    showNotification('Помилка завантаження товарів', 'error');
+  }
+}
 
-// open submenu on mobile tap
-document.querySelectorAll('.menu .has-sub > a').forEach(a=>{
-  a.addEventListener('click', (e)=>{
-    if (window.matchMedia('(hover: none)').matches) {
-      e.preventDefault();
-      a.parentElement.classList.toggle('tap');
+// Анімація статистики
+function animateStats() {
+  const stats = document.querySelectorAll('.stat-number');
+  
+  stats.forEach(stat => {
+    const target = parseInt(stat.dataset.target);
+    let current = 0;
+    const increment = target / 50;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        stat.textContent = target;
+        clearInterval(timer);
+      } else {
+        stat.textContent = Math.floor(current);
+      }
+    }, 30);
+  });
+}
+
+// Фільтрація товарів
+function filterProducts(filter) {
+  currentFilter = filter;
+  
+  let filtered = products;
+  if (filter !== 'all') {
+    filtered = products.filter(p => p.subcategory === filter);
+  }
+  
+  renderProducts(filtered);
+  
+  // Оновлюємо активний таб
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    const tabFilter = tab.dataset.filter;
+    if (tabFilter === filter) {
+      tab.classList.add('active');
+    } else {
+      tab.classList.remove('active');
     }
   });
-});
-
-// CTA and icon buttons
-document.addEventListener('click', (e)=>{
-  const b = e.target.closest('[data-go]');
-  if(b && b.getAttribute('data-go')==='moto'){
-    e.preventDefault();
-    window.location.href = 'moto.html';
-  }
-  const f = e.target.closest('[data-filter]');
-  if(f && (f.tagName==='A' || f.tagName==='BUTTON')){
-    e.preventDefault();
-    applyFilter(f.getAttribute('data-filter'));
-    const el = document.getElementById('catalog');
-    if (el) el.scrollIntoView({behavior:'smooth'});
-  }
-});
-
-let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-let PRODUCTS = [];
-window.PRODUCTS = PRODUCTS; // reference
-
-function setLanguage(lang){
-  language = lang;
-  localStorage.setItem('site_lang', lang);
-  document.querySelectorAll('[data-lang-uk]').forEach(el=>{
-    const txt = el.getAttribute('data-lang-' + language);
-    if(txt) el.textContent = txt;
-  });
-}
-function escapeHtml(s=''){return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
-
-async function loadProducts(){
-  try{
-    const res = await fetch('data/products.json', {cache:'no-store'});
-    PRODUCTS = await res.json();
-    window.PRODUCTS = PRODUCTS;
-  }catch(e){ console.error('Cannot load products.json', e); }
 }
 
-function displayProducts(products){
-  const grid = document.getElementById('catalog-grid');
-  if(!grid) return;
-  grid.innerHTML = '';
-  products.forEach(p=>{
-    const cover = (Array.isArray(p.images) && p.images[0]) || p.image || 'images/no-image.jpg';
-    const priceStr = (p.price && p.price > 0) ? `${p.price} ${p.currency || 'грн'}` : (language==='uk' ? 'Уточнюйте' : 'Ask for price');
-    const catBadge = `<div style="font-size:12px;color:#666;margin-bottom:6px">${p.category||''}${p.subcategory? ' • '+p.subcategory:''}</div>`;
-    const card = document.createElement('div');
-    card.className='card';
-    card.innerHTML = `
-      <div class="img"><img src="${cover}" alt="${escapeHtml(p.name_ua)}"></div>
-      <div class="body">
-        ${catBadge}
-        <h3 data-lang-uk="${escapeHtml(p.name_ua)}" data-lang-en="${escapeHtml(p.name_en)}">${escapeHtml(p.name_ua)}</h3>
-        <div class="price">${priceStr}</div>
-        <div class="actions">
-          <a class="btn btn-dark" href="product.html?id=${encodeURIComponent(p.id)}" target="_blank"
-             data-lang-uk="Переглянути" data-lang-en="View">Переглянути</a>
-          <button class="btn btn-primary" data-id="${p.id}" data-action="add"
-             data-lang-uk="Купити" data-lang-en="Buy">Купити</button>
+// Рендер товарів
+function renderProducts(productsToRender) {
+  if (!catalogGrid) return;
+  
+  catalogGrid.innerHTML = productsToRender.map((product, index) => {
+    const imageUrl = product.images?.[0] || 'images/no-image.jpg';
+    const price = product.price > 0 
+      ? `${product.price.toLocaleString()} ${product.currency}`
+      : 'Ціна за запитом';
+    
+    return `
+      <div class="product-card" style="animation-delay: ${index * 0.1}s" onclick="openProductModal('${product.id}')">
+        <div class="product-image">
+          <img src="${imageUrl}" alt="${product.name_ua}" loading="lazy">
+          <span class="product-badge">${product.subcategory}</span>
         </div>
-      </div>`;
-    grid.appendChild(card);
+        <div class="product-info">
+          <div class="product-category">${product.category}</div>
+          <h3 class="product-title">${product.name_ua}</h3>
+          <div class="product-price">${price}</div>
+          <div class="product-actions">
+            <button class="btn-buy" onclick="event.stopPropagation(); addToCart('${product.id}')">
+              🛒 Додати
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  // Ініціалізуємо 3D ефект для нових карток
+  setTimeout(init3DCards, 100);
+}
+
+// Відкриття модального вікна з товаром
+function openProductModal(productId) {
+  const product = products.find(p => p.id === productId);
+  if (!product) return;
+  
+  const imageUrl = product.images?.[0] || 'images/no-image.jpg';
+  const price = product.price > 0 
+    ? `${product.price.toLocaleString()} ${product.currency}`
+    : 'Ціна за запитом';
+  
+  // Генеруємо HTML для характеристик
+  const specsHTML = product.specs ? `
+    <table class="specs-table">
+      ${product.specs.ua.map(spec => `
+        <tr>
+          <td>${spec[0]}</td>
+          <td>${spec[1]}</td>
+        </tr>
+      `).join('')}
+    </table>
+  ` : '';
+  
+  // Генеруємо HTML для переваг
+  const benefitsHTML = product.benefits ? `
+    <ul class="benefits-list">
+      ${product.benefits.ua.map(benefit => `
+        <li>${benefit}</li>
+      `).join('')}
+    </ul>
+  ` : '';
+  
+  // Генеруємо мініатюри зображень
+  const thumbnailsHTML = product.images?.map((img, index) => `
+    <div class="thumbnail ${index === 0 ? 'active' : ''}" onclick="event.stopPropagation(); changeMainImage(this, '${img}')">
+      <img src="${img}" alt="${product.name_ua}">
+    </div>
+  `).join('') || '';
+  
+  modalContent.innerHTML = `
+    <div class="product-detail">
+      <div class="product-gallery">
+        <div class="main-image" onclick="zoomImage(this)">
+          <img src="${imageUrl}" alt="${product.name_ua}" id="mainImage">
+        </div>
+        <div class="image-thumbnails">
+          ${thumbnailsHTML}
+        </div>
+      </div>
+      <div class="product-info-detail">
+        <h2>${product.name_ua}</h2>
+        <div class="product-meta">
+          <span class="product-category-detail">${product.category}</span>
+          <span class="product-category-detail">${product.subcategory}</span>
+        </div>
+        <div class="product-price-detail">${price}</div>
+        <p class="product-description">${product.description_ua}</p>
+        
+        ${specsHTML}
+        ${benefitsHTML}
+        
+        <div class="product-actions-detail">
+          <button class="btn btn-primary" onclick="addToCart('${product.id}')">
+            🛒 Додати в кошик
+          </button>
+          <button class="btn btn-viber" onclick="sendToViber('${product.id}')">
+            📱 Запитати у Viber
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  modalOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+// Зміна головного зображення
+function changeMainImage(thumbnail, imageUrl) {
+  document.getElementById('mainImage').src = imageUrl;
+  
+  // Оновлюємо активний клас
+  document.querySelectorAll('.thumbnail').forEach(thumb => {
+    thumb.classList.remove('active');
   });
-  grid.querySelectorAll('[data-action="add"]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      addToCart(btn.getAttribute('data-id'));
-      alert(language==='uk' ? '✅ Додано в корзину' : '✅ Added to cart');
+  thumbnail.classList.add('active');
+}
+
+// Зум зображення
+function zoomImage(element) {
+  element.classList.toggle('zoomed');
+}
+
+// Відправка у Viber
+function sendToViber(productId) {
+  const product = products.find(p => p.id === productId);
+  if (!product) return;
+  
+  const message = `Добрий день! Цікавить товар: ${product.name_ua}\nЦіна: ${product.price} ${product.currency}`;
+  window.open(`viber://forward?text=${encodeURIComponent(message)}`, '_blank');
+}
+
+// Закриття модального вікна
+function closeProductModal() {
+  modalOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Додавання до кошика
+function addToCart(productId) {
+  const product = products.find(p => p.id === productId);
+  if (!product) return;
+  
+  const existingItem = cart.find(item => item.id === productId);
+  
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      id: product.id,
+      name_ua: product.name_ua,
+      name_en: product.name_en,
+      price: product.price,
+      currency: product.currency,
+      image: product.images?.[0] || 'images/no-image.jpg',
+      quantity: 1
+    });
+  }
+  
+  saveCart();
+  showNotification('✅ Товар додано до кошика');
+  
+  // Анімація кнопки
+  if (event && event.target) {
+    const btn = event.target;
+    btn.style.transform = 'scale(0.9)';
+    setTimeout(() => {
+      btn.style.transform = '';
+    }, 200);
+  }
+  
+  // Оновлюємо лічильник
+  updateCartCount();
+}
+
+// Оновлення лічильника
+function updateCartCount() {
+  const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+  cartCount.textContent = count;
+  cartCount.style.animation = 'bounce 0.5s ease';
+  setTimeout(() => {
+    cartCount.style.animation = '';
+  }, 500);
+}
+
+// Збереження кошика
+function saveCart() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+  renderCart();
+  updateCartCount();
+}
+
+// Рендер кошика
+function renderCart() {
+  if (!cartItems) return;
+  
+  if (cart.length === 0) {
+    cartItems.innerHTML = '<div class="empty-cart">🛒 Кошик порожній</div>';
+    cartTotal.innerHTML = '';
+    if (checkoutBtn) checkoutBtn.style.display = 'none';
+    return;
+  }
+  
+  if (checkoutBtn) checkoutBtn.style.display = 'block';
+  
+  cartItems.innerHTML = cart.map((item, index) => {
+    const itemTotal = item.price * item.quantity;
+    
+    return `
+      <div class="cart-item" style="animation-delay: ${index * 0.1}s">
+        <img src="${item.image}" alt="${item.name_ua}">
+        <div class="cart-item-info">
+          <h4>${item.name_ua}</h4>
+          <div class="cart-item-price">${item.price} ${item.currency}</div>
+        </div>
+        <div class="cart-item-actions">
+          <button class="qty-btn" onclick="updateQuantity('${item.id}', -1)">−</button>
+          <span>${item.quantity}</span>
+          <button class="qty-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
+          <button class="remove-btn" onclick="removeFromCart('${item.id}')">🗑️</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  cartTotal.innerHTML = `
+    <span>Разом:</span>
+    <span class="total-amount">${total.toLocaleString()} ${cart[0].currency}</span>
+  `;
+}
+
+// Оновлення кількості
+function updateQuantity(productId, delta) {
+  const item = cart.find(i => i.id === productId);
+  if (!item) return;
+  
+  item.quantity += delta;
+  
+  if (item.quantity <= 0) {
+    removeFromCart(productId);
+  } else {
+    saveCart();
+    
+    // Анімація кнопки
+    if (event && event.target) {
+      const btn = event.target;
+      btn.style.transform = 'scale(0.9)';
+      setTimeout(() => {
+        btn.style.transform = '';
+      }, 200);
+    }
+  }
+}
+
+// Видалення з кошика
+function removeFromCart(productId) {
+  cart = cart.filter(i => i.id !== productId);
+  saveCart();
+  showNotification('🗑️ Товар видалено з кошика');
+  
+  // Анімація видалення
+  if (event && event.target) {
+    const item = event.target.closest('.cart-item');
+    if (item) {
+      item.style.animation = 'slideOut 0.3s ease-out forwards';
+      setTimeout(() => {
+        renderCart();
+      }, 300);
+    }
+  }
+}
+
+// Відкриття кошика
+function openCart() {
+  cartSidebar.classList.add('open');
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+// Закриття кошика
+function closeCartSidebar() {
+  cartSidebar.classList.remove('open');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Оформлення замовлення
+function checkout() {
+  if (cart.length === 0) return;
+  
+  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  let message = '🛒 *Замовлення Winner Znamyanka*\n\n';
+  
+  cart.forEach(item => {
+    message += `• ${item.name_ua}\n`;
+    message += `  ${item.quantity} x ${item.price} ${item.currency} = ${item.price * item.quantity} ${item.currency}\n\n`;
+  });
+  
+  message += `📊 *Разом: ${total.toLocaleString()} ${cart[0].currency}*`;
+  
+  // Відкриваємо Viber
+  window.open(`viber://forward?text=${encodeURIComponent(message)}`, '_blank');
+  
+  showNotification('📋 Повідомлення готове до відправки');
+}
+
+// Показати сповіщення
+function showNotification(message, type = 'success') {
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+  notification.textContent = message;
+  notification.style.cssText = `
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: ${type === 'success' ? '#f1c40f' : '#ff4444'};
+    color: ${type === 'success' ? '#0a0a0f' : 'white'};
+    padding: 15px 25px;
+    border-radius: 50px;
+    z-index: 2000;
+    animation: slideInRight 0.3s ease-out;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  `;
+  
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.animation = 'slideOutRight 0.3s ease-out';
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+// Зміна мови
+function setLanguage(lang) {
+  currentLanguage = lang;
+  localStorage.setItem('language', lang);
+  
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.id === `lang-${lang}`);
+  });
+  
+  filterProducts(currentFilter);
+}
+
+// Паралакс ефект
+function parallaxEffect() {
+  const spheres = document.querySelectorAll('.sphere');
+  window.addEventListener('mousemove', (e) => {
+    const mouseX = e.clientX / window.innerWidth;
+    const mouseY = e.clientY / window.innerHeight;
+    
+    spheres.forEach((sphere, i) => {
+      const speed = (i + 1) * 20;
+      const x = (mouseX - 0.5) * speed;
+      const y = (mouseY - 0.5) * speed;
+      sphere.style.transform = `translate(${x}px, ${y}px)`;
     });
   });
 }
 
-function addToCart(id){
-  id = String(id);
-  const p = PRODUCTS.find(x=> String(x.id)===id);
-  if(!p) return;
-  const exist = cart.find(i=> String(i.id)===id);
-  if(exist) exist.quantity++;
-  else cart.push({id:p.id, name_ua:p.name_ua, name_en:p.name_en, price:p.price, currency:p.currency||'грн', image:(p.images && p.images[0]) || p.image || 'images/no-image.jpg', quantity:1});
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCart();
-}
-function renderCart(){
-  if(!cartEl) return;
-  if(!cart.length){
-    cartEl.innerHTML = '<p style="padding:8px">'+(language==='uk'?'Порожня корзина':'Cart is empty')+'</p>';
-    if(checkoutBtn) checkoutBtn.style.display='none';
-    if(cartTotalsEl) cartTotalsEl.innerHTML='';
-    return;
-  }
-  if(checkoutBtn) checkoutBtn.style.display='inline-block';
-  cartEl.innerHTML = cart.map(i=>`
-    <div class="cart-item">
-      <div style="display:flex;align-items:center;gap:10px">
-        <img src="${i.image}" alt="${escapeHtml(i.name_ua)}" style="width:64px;height:48px;object-fit:cover;border-radius:8px">
-        <div>
-          <div>${escapeHtml(language==='uk'?i.name_ua:i.name_en)}</div>
-          <div class="qty">${language==='uk'?'Кількість':'Qty'}: <b>${i.quantity}</b></div>
-        </div>
-      </div>
-      <div>
-        <div>${i.price * i.quantity} ${i.currency}</div>
-        <div style="margin-top:6px;display:flex;gap:6px;justify-content:flex-end">
-          <button onclick="changeQty('${i.id}',-1)">-</button>
-          <button onclick="changeQty('${i.id}',1)">+</button>
-          <button onclick="removeFromCart('${i.id}')">×</button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-  if(cartTotalsEl){
-    const total = cart.reduce((s,i)=> s + i.price*i.quantity, 0);
-    cartTotalsEl.innerHTML = '<div style="padding:8px">'+(language==='uk'?'Разом: ':'Total: ')+ '<b>'+ total + '</b> ' + (cart[0]?.currency||'грн') + '</div>';
-  }
-}
-function changeQty(id,d){const it = cart.find(i=> String(i.id)===String(id)); if(!it) return; it.quantity += d; if(it.quantity<1) it.quantity=1; localStorage.setItem('cart', JSON.stringify(cart)); renderCart();}
-function removeFromCart(id){cart = cart.filter(i=> String(i.id)!==String(id)); localStorage.setItem('cart', JSON.stringify(cart)); renderCart();}
-
-if(checkoutBtn){
-  checkoutBtn.addEventListener('click', ()=>{
-    if(!cart.length) return;
-    const total = cart.reduce((s,i)=> s + i.price*i.quantity, 0);
-    let txt = (language==='uk'?'Замовлення:':'Order:')+'%0A';
-    cart.forEach(i=>{ const name=(language==='uk'?i.name_ua:i.name_en); txt += `${name} x${i.quantity} — ${i.price*i.quantity} ${i.currency}%0A`; });
-    txt += (language==='uk'?`Разом: ${total} ${cart[0].currency}`:`Total: ${total} ${cart[0].currency}`);
-    const viberLink = `viber://chat?number=${encodeURIComponent(VIBER_NUMBER)}`;
-    window.location.href = viberLink;
-    setTimeout(()=>{ window.location.href = `viber://forward?text=${txt}`; }, 600);
+// 3D ефект для карток
+function init3DCards() {
+  const cards = document.querySelectorAll('.product-card');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const rotateX = (y - centerY) / 20;
+      const rotateY = (centerX - x) / 20;
+      
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px) scale(1.02)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
   });
 }
 
-// Filters
-function applyFilter(filterCat=null, subcat=null){
-  if(!PRODUCTS.length) return;
-  let list = [...PRODUCTS];
-  if(filterCat) list = list.filter(p => (p.category||'').toLowerCase().includes(filterCat.toLowerCase()));
-  if(subcat) list = list.filter(p => (p.subcategory||'').toLowerCase() === subcat.toLowerCase());
-  displayProducts(list);
-  setLanguage(language);
-}
-
-// Parse hash to filter (#cat=...&sub=...)
-function filterFromHash(){
-  const h = (location.hash||'').replace('#','');
-  if(!h) return;
-  const params = new URLSearchParams(h);
-  const cat = params.get('cat');
-  const sub = params.get('sub');
-  if(cat || sub){ applyFilter(cat, sub); const el=document.getElementById('catalog'); if(el) el.scrollIntoView(); }
-}
-
-// Product page
-async function initProductPage(){
-  if(!PRODUCTS.length) await loadProducts();
-  const params = new URLSearchParams(location.search);
-  const id = params.get('id');
-  const p = PRODUCTS.find(x=> String(x.id)===String(id));
-  const view = document.getElementById('product-view');
-  if(!view) return;
-  if(!p){ view.innerHTML='<p>'+(language==='uk'?'Товар не знайдено':'Product not found')+'</p>'; return; }
-
-  const imgs = Array.isArray(p.images)&&p.images.length ? p.images : [p.image || 'images/no-image.jpg'];
-  const priceStr = (p.price && p.price>0) ? `${p.price} ${p.currency||'грн'}` : (language==='uk'?'Уточнюйте':'Ask for price');
-
-  view.innerHTML = `
-    <div class="p-gallery">
-      <div class="carousel" id="carousel">
-        <img src="${imgs[0]}" alt="${escapeHtml(p.name_ua)}" id="car-img">
-        <button class="car-nav car-prev" id="car-prev">‹</button>
-        <button class="car-nav car-next" id="car-next">›</button>
-      </div>
-    </div>
-    <div class="p-info">
-      <h1 data-lang-uk="${escapeHtml(p.name_ua)}" data-lang-en="${escapeHtml(p.name_en)}">${escapeHtml(p.name_ua)}</h1>
-      <div class="price">${priceStr}</div>
-      <p class="desc" data-lang-uk="${escapeHtml(p.description_ua||'')}" data-lang-en="${escapeHtml(p.description_en||'')}">
-        ${escapeHtml(p.description_ua||'')}
-      </p>
-      ${p.specs ? renderSpecsTable(p.specs) : ''}
-      ${p.benefits ? renderBenefits(p.benefits) : ''}
-      <div class="p-buttons" style="margin-top:12px">
-        <button class="btn btn-primary" id="btn-buy" data-lang-uk="Купити" data-lang-en="Buy">Купити</button>
-        <a class="btn btn-dark link" id="btn-viber" href="#" data-lang-uk="Написати у Viber" data-lang-en="Message on Viber">Написати у Viber</a>
-      </div>
-    </div>
-  `;
-
-  let idx=0; const carImg=document.getElementById('car-img');
-  document.getElementById('car-prev').addEventListener('click', ()=>{ idx=(idx-1+imgs.length)%imgs.length; carImg.src=imgs[idx]; });
-  document.getElementById('car-next').addEventListener('click', ()=>{ idx=(idx+1)%imgs.length; carImg.src=imgs[idx]; });
-  let startX=0;
-  document.getElementById('carousel').addEventListener('touchstart',(e)=>{ startX=e.touches[0].clientX; });
-  document.getElementById('carousel').addEventListener('touchend',(e)=>{ const dx=e.changedTouches[0].clientX-startX; if(Math.abs(dx)>40){ if(dx<0){idx=(idx+1)%imgs.length}else{idx=(idx-1+imgs.length)%imgs.length} carImg.src=imgs[idx]; } });
-
-  document.getElementById('btn-buy').addEventListener('click', ()=>{ addToCart(p.id); alert(language==='uk'?'✅ Додано в корзину':'✅ Added to cart'); });
-  const msg = encodeURIComponent((language==='uk'?'Добрий день! Хочу купити товар: ':'Hello! I want to buy: ') + (language==='uk'?p.name_ua:p.name_en));
-  const viberLink = `viber://chat?number=${encodeURIComponent(VIBER_NUMBER)}`;
-  document.getElementById('btn-viber').setAttribute('href', viberLink);
-  document.getElementById('btn-viber').addEventListener('click', ()=>{ setTimeout(()=>{ window.location.href=`viber://forward?text=${msg}`; }, 500); });
-
-  setLanguage(language);
-
-  function renderSpecsTable(specs){
-    const rows = (language==='uk' ? specs.ua : specs.en) || specs.ua || [];
-    if(!rows.length) return '';
-    const trs = rows.map(r=>`<tr><td>${escapeHtml(r[0])}</td><td>${escapeHtml(r[1])}</td></tr>`).join('');
-    return `<table class="specs-table">${trs}</table>`;
-  }
-  function renderBenefits(benef){
-    const list = (language==='uk' ? benef.ua : benef.en) || benef.ua || [];
-    if(!list.length) return '';
-    return `<ul class="benefits">${list.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul>`;
-  }
-}
-
-async function start(){
-  await loadProducts();
-  if(catalogGrid){
-    // hash filter support
-    filterFromHash();
-    if(!location.hash) displayProducts(PRODUCTS);
-  }
+// Ініціалізація
+document.addEventListener('DOMContentLoaded', () => {
+  loadProducts();
   renderCart();
-  setLanguage(language);
-  if(window.__PRODUCT_PAGE__){ initProductPage(); }
-}
-start();
+  updateCartCount();
+  parallaxEffect();
+  
+  // Обробники фільтрів
+  document.querySelectorAll('[data-filter]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const filter = e.target.closest('[data-filter]').dataset.filter;
+      filterProducts(filter);
+    });
+  });
+  
+  // Обробники кошика
+  cartToggle?.addEventListener('click', openCart);
+  closeCart?.addEventListener('click', closeCartSidebar);
+  overlay?.addEventListener('click', closeCartSidebar);
+  
+  // Обробник оформлення
+  checkoutBtn?.addEventListener('click', checkout);
+  
+  // Обробники мови
+  document.getElementById('lang-uk')?.addEventListener('click', () => setLanguage('uk'));
+  document.getElementById('lang-en')?.addEventListener('click', () => setLanguage('en'));
+  
+  // Обробники модального вікна
+  closeModal?.addEventListener('click', closeProductModal);
+  modalOverlay?.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
+      closeProductModal();
+    }
+  });
+  
+  // Плавний скрол
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+});
+
+// Експорт функцій
+window.openProductModal = openProductModal;
+window.addToCart = addToCart;
+window.updateQuantity = updateQuantity;
+window.removeFromCart = removeFromCart;
+window.changeMainImage = changeMainImage;
+window.zoomImage = zoomImage;
+window.sendToViber = sendToViber;
