@@ -1,14 +1,14 @@
 [
   {
     "id": "felicity-ess-lpbf-24v-200ah",
-    "category": "Електро",
-    "subcategory": "Акумулятори",
+    "category": "Світло",
+    "subcategory": "АКБ",
     "price": 38800,
     "currency": "грн",
     "name_ua": "Felicity ESS LPBF 24V 200Ah літієвий акумулятор",
     "name_en": "Felicity ESS LPBF 24V 200Ah Lithium Battery",
     "description_ua": "Літієвий акумулятор Felicity ESS LPBF 24V 200Ah — надійне рішення для систем резервного живлення, сонячних електростанцій та автономних систем.",
-    "description_en": "Felicity ESS LPBF 24V 200Ah lithium battery — reliable solution for backup power systems, solar stations and автономous systems.",
+    "description_en": "Felicity ESS LPBF 24V 200Ah lithium battery — reliable solution for backup power systems and solar stations.",
     "images": [
       "images/feli.jpg",
       "images/rw.jpg",
@@ -43,8 +43,8 @@
   },
   {
     "id": "must-3-2kw-24v-125ah",
-    "category": "Електро",
-    "subcategory": "Інвертори / ДБЖ",
+    "category": "Світло",
+    "subcategory": "Інвертор",
     "price": 54000,
     "currency": "грн",
     "name_ua": "ДБЖ зарядна станція інвертор Must 3.2 кВт 125Ah 24V",
