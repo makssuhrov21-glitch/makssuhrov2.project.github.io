@@ -1,463 +1,409 @@
-let products = [];
+// ========== ДАНІ ТОВАРІВ ==========
+const products = [
+    {
+        id: "felicity-1",
+        category: "Світло",
+        subcategory: "АКБ",
+        price: 38800,
+        currency: "грн",
+        name_ua: "🔋 Felicity ESS LPBF 24V 200Ah",
+        description_ua: "Літієвий акумулятор Felicity ESS LPBF 24V 200Ah — надійне рішення для систем резервного живлення, сонячних електростанцій та автономних систем.",
+        images: ["images/feli.jpg", "images/rw.jpg", "images/tele.jpg"]
+    },
+    {
+        id: "must-1",
+        category: "Світло",
+        subcategory: "Інвертор",
+        price: 54000,
+        currency: "грн",
+        name_ua: "⚡ Must 3.2kW 24V Інвертор",
+        description_ua: "Потужний інвертор Must 3.2kW з чистою синусоїдою. Ідеальне рішення для резервного живлення будинку або офісу.",
+        images: ["images/must_3_2kw_1.jpg"]
+    },
+    {
+        id: "hybrid-1",
+        category: "Світло",
+        subcategory: "Гібридний",
+        price: 85000,
+        currency: "грн",
+        name_ua: "🔄 Гібридний інвертор 5kW 48V",
+        description_ua: "Гібридний інвертор з вбудованим MPPT контролером 100A. Підтримує роботу з сонячними панелями, мережею та акумуляторами.",
+        images: ["images/hybrid.jpg"]
+    }
+];
+
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-let currentFilter = 'all';
 let currentTheme = localStorage.getItem('theme') || 'light';
 
-const VIBER_NUMBER = '+380995371400';
-const TELEGRAM_TOKEN = '8537676411:AAFsfW7VwQsTubmuLqUbNhHd5IsRjfBGZtg'; 
+// ========== TELEGRAM НАЛАШТУВАННЯ ==========
+const TELEGRAM_TOKEN = '8537676411:AAFsfW7VwQsTubmuLqUbNhHd5IsRjfBGZtg';
 const TELEGRAM_CHAT_ID = '1009593325';
 
-// Отримуємо всі елементи після завантаження DOM
+// ========== ОСНОВНІ ФУНКЦІЇ ==========
 document.addEventListener('DOMContentLoaded', function() {
-    // Отримуємо елементи
-    const catalogGrid = document.getElementById('catalog-grid');
-    const cartSidebar = document.getElementById('cartSidebar');
-    const cartItems = document.getElementById('cartItems');
-    const cartTotal = document.getElementById('cartTotal');
-    const cartCount = document.getElementById('cartCount');
-    const checkoutBtn = document.getElementById('checkoutBtn');
-    const overlay = document.getElementById('overlay');
-    const cartToggle = document.getElementById('cartToggle');
-    const closeCart = document.getElementById('closeCart');
-    const modalOverlay = document.getElementById('modalOverlay');
-    const modalContent = document.getElementById('modalContent');
-    const closeModal = document.getElementById('closeModal');
-    const themeToggle = document.getElementById('themeToggle');
-    const checkoutModalOverlay = document.getElementById('checkoutModalOverlay');
-    const closeCheckoutModal = document.getElementById('closeCheckoutModal');
-    const cancelCheckout = document.getElementById('cancelCheckout');
-    const checkoutForm = document.getElementById('checkoutForm');
-    const checkoutCartItems = document.getElementById('checkoutCartItems');
-    const checkoutTotal = document.getElementById('checkoutTotal');
-
     // Встановлюємо тему
-    setTheme(currentTheme);
+    document.body.className = currentTheme + '-theme';
+    
+    // Показуємо товари
+    showProducts();
+    
+    // Показуємо кошик
+    showCart();
+    
+    // Статистика
+    animateStats();
+    
+    // Кнопка теми
+    document.getElementById('themeToggle')?.addEventListener('click', function() {
+        currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+        localStorage.setItem('theme', currentTheme);
+        document.body.className = currentTheme + '-theme';
+        showMessage('Тему змінено');
+    });
+    
+    // Кнопка кошика
+    document.getElementById('cartToggle')?.addEventListener('click', function() {
+        document.getElementById('cartSidebar')?.classList.add('open');
+        document.getElementById('overlay')?.classList.add('active');
+    });
+    
+    // Закриття кошика
+    document.getElementById('closeCart')?.addEventListener('click', closeCart);
+    document.getElementById('overlay')?.addEventListener('click', closeCart);
+    
+    // Кнопка оформлення
+    document.getElementById('checkoutBtn')?.addEventListener('click', openCheckoutModal);
+    
+    // Закриття модального вікна товару
+    document.getElementById('closeModal')?.addEventListener('click', closeProductModal);
+    document.getElementById('modalOverlay')?.addEventListener('click', function(e) {
+        if (e.target === this) closeProductModal();
+    });
+    
+    // Закриття модального вікна оформлення
+    document.getElementById('closeCheckoutModal')?.addEventListener('click', closeCheckoutModal);
+    document.getElementById('cancelCheckout')?.addEventListener('click', closeCheckoutModal);
+    document.getElementById('checkoutModalOverlay')?.addEventListener('click', function(e) {
+        if (e.target === this) closeCheckoutModal();
+    });
+    
+    // Відправка форми
+    document.getElementById('checkoutForm')?.addEventListener('submit', handleCheckoutSubmit);
+});
 
-    // Завантажуємо товари
-    loadProducts();
+function closeCart() {
+    document.getElementById('cartSidebar')?.classList.remove('open');
+    document.getElementById('overlay')?.classList.remove('active');
+}
 
-    // Відображаємо кошик
-    renderCart();
-    updateCartCount();
+// ========== ВІДОБРАЖЕННЯ ТОВАРІВ ==========
+function showProducts() {
+    const grid = document.getElementById('catalog-grid');
+    if (!grid) return;
+    
+    grid.innerHTML = products.map((p, i) => `
+        <div class="product-card" style="animation-delay: ${i * 0.1}s" onclick="openProductModal('${p.id}')">
+            <div class="product-image">
+                <img src="${p.images[0]}" alt="${p.name_ua}" onerror="this.src='images/no-image.jpg'">
+                <span class="product-badge">${p.subcategory}</span>
+            </div>
+            <div class="product-info">
+                <div class="product-category">${p.category}</div>
+                <h3 class="product-title">${p.name_ua}</h3>
+                <div class="product-price">${p.price} ${p.currency}</div>
+                <div class="product-actions">
+                    <button class="btn-buy" onclick="event.stopPropagation(); addToCart('${p.id}')">🛒 Додати</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
 
-    // Додаємо обробники подій
-    if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
-    if (cartToggle) cartToggle.addEventListener('click', openCart);
-    if (closeCart) closeCart.addEventListener('click', closeCartSidebar);
-    if (overlay) overlay.addEventListener('click', closeCartSidebar);
-    if (checkoutBtn) checkoutBtn.addEventListener('click', openCheckoutModal);
-    if (closeModal) closeModal.addEventListener('click', closeProductModal);
-    if (modalOverlay) {
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) closeProductModal();
+// ========== МОДАЛЬНЕ ВІКНО ТОВАРУ ==========
+window.openProductModal = function(id) {
+    const p = products.find(p => p.id === id);
+    if (!p) return;
+    
+    const modal = document.getElementById('modalContent');
+    const overlay = document.getElementById('modalOverlay');
+    if (!modal || !overlay) return;
+    
+    // Генеруємо мініатюри
+    const thumbs = p.images.map((img, index) => `
+        <div class="thumbnail ${index === 0 ? 'active' : ''}" onclick="changeImage('${img}', this)">
+            <img src="${img}" onerror="this.src='images/no-image.jpg'">
+        </div>
+    `).join('');
+    
+    modal.innerHTML = `
+        <div class="product-detail">
+            <div class="product-gallery">
+                <div class="main-image">
+                    <img src="${p.images[0]}" alt="${p.name_ua}" id="mainImage" onerror="this.src='images/no-image.jpg'">
+                </div>
+                <div class="image-thumbnails">
+                    ${thumbs}
+                </div>
+            </div>
+            <div class="product-info-detail">
+                <h2>${p.name_ua}</h2>
+                <div class="product-meta">
+                    <span class="product-category-detail">${p.category}</span>
+                    <span class="product-category-detail">${p.subcategory}</span>
+                </div>
+                <div class="product-price-detail">${p.price} ${p.currency}</div>
+                <p class="product-description">${p.description_ua}</p>
+                <div class="product-actions-detail">
+                    <button class="btn btn-primary" onclick="addToCart('${p.id}')">🛒 Додати в кошик</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+// Зміна зображення
+window.changeImage = function(src, element) {
+    document.getElementById('mainImage').src = src;
+    document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+    element.classList.add('active');
+};
+
+function closeProductModal() {
+    document.getElementById('modalOverlay')?.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ========== КОШИК ==========
+window.addToCart = function(id) {
+    const p = products.find(p => p.id === id);
+    if (!p) return;
+    
+    const item = cart.find(i => i.id === id);
+    if (item) {
+        item.quantity++;
+    } else {
+        cart.push({
+            id: p.id,
+            name_ua: p.name_ua,
+            price: p.price,
+            currency: p.currency,
+            image: p.images[0],
+            quantity: 1
         });
     }
     
-    // Обробники для модального вікна оформлення
-    if (closeCheckoutModal) closeCheckoutModal.addEventListener('click', closeCheckoutModalFunc);
-    if (cancelCheckout) cancelCheckout.addEventListener('click', closeCheckoutModalFunc);
-    if (checkoutModalOverlay) {
-        checkoutModalOverlay.addEventListener('click', (e) => {
-            if (e.target === checkoutModalOverlay) closeCheckoutModalFunc();
-        });
-    }
-    if (checkoutForm) checkoutForm.addEventListener('submit', handleCheckoutSubmit);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    showCart();
+    showMessage('✅ Товар додано');
+};
 
-    // Обробники фільтрів
-    document.querySelectorAll('[data-filter]').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const filter = e.target.closest('[data-filter]').dataset.filter;
-            filterProducts(filter);
-            document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });
+window.updateQty = function(id, delta) {
+    const item = cart.find(i => i.id === id);
+    if (!item) return;
+    
+    item.quantity += delta;
+    if (item.quantity <= 0) {
+        cart = cart.filter(i => i.id !== id);
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    showCart();
+};
+
+window.removeFromCart = function(id) {
+    cart = cart.filter(i => i.id !== id);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    showCart();
+    showMessage('🗑️ Товар видалено');
+};
+
+function showCart() {
+    const cartEl = document.getElementById('cartItems');
+    const totalEl = document.getElementById('cartTotal');
+    const countEl = document.getElementById('cartCount');
+    
+    if (!cartEl) return;
+    
+    if (cart.length === 0) {
+        cartEl.innerHTML = '<div class="empty-cart">🛒 Кошик порожній</div>';
+        if (totalEl) totalEl.innerHTML = '';
+        if (countEl) countEl.textContent = '0';
+        return;
+    }
+    
+    cartEl.innerHTML = cart.map((item, i) => `
+        <div class="cart-item">
+            <img src="${item.image}" alt="${item.name_ua}" onerror="this.src='images/no-image.jpg'">
+            <div class="cart-item-info">
+                <h4>${item.name_ua}</h4>
+                <div class="cart-item-price">${item.price} ${item.currency}</div>
+            </div>
+            <div class="cart-item-actions">
+                <button class="qty-btn" onclick="updateQty('${item.id}', -1)">−</button>
+                <span>${item.quantity}</span>
+                <button class="qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
+                <button class="remove-btn" onclick="removeFromCart('${item.id}')">🗑️</button>
+            </div>
+        </div>
+    `).join('');
+    
+    const total = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+    if (totalEl) totalEl.innerHTML = `<span>Разом:</span> <span class="total-amount">${total} ${cart[0].currency}</span>`;
+    if (countEl) countEl.textContent = cart.reduce((sum, i) => sum + i.quantity, 0);
+}
+
+// ========== МОДАЛЬНЕ ВІКНО ОФОРМЛЕННЯ ==========
+function openCheckoutModal() {
+    if (cart.length === 0) {
+        showMessage('🛒 Кошик порожній', 'error');
+        return;
+    }
+    
+    // Показуємо товари в модальному вікні
+    const itemsEl = document.getElementById('checkoutCartItems');
+    const totalEl = document.getElementById('checkoutTotal');
+    const total = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+    
+    itemsEl.innerHTML = cart.map(item => `
+        <div class="checkout-cart-item">
+            <div class="checkout-item-info">
+                <div class="checkout-item-name">${item.name_ua}</div>
+                <div class="checkout-item-details">${item.quantity} x ${item.price} ${item.currency}</div>
+            </div>
+            <div class="checkout-item-price">${item.price * item.quantity} ${item.currency}</div>
+        </div>
+    `).join('');
+    
+    totalEl.innerHTML = `<span>${total} ${cart[0].currency}</span>`;
+    
+    document.getElementById('checkoutModalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCheckoutModal() {
+    document.getElementById('checkoutModalOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ========== ВІДПРАВКА ЗАМОВЛЕННЯ В TELEGRAM ==========
+async function sendToTelegram(message) {
+    try {
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'HTML'
+            })
         });
+        const data = await response.json();
+        return data.ok;
+    } catch (error) {
+        console.error('Telegram error:', error);
+        return false;
+    }
+}
+
+function formatOrderMessage(cart, customer) {
+    const date = new Date().toLocaleString('uk-UA', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
     });
+    
+    const total = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+    
+    let message = `🛍 <b>НОВЕ ЗАМОВЛЕННЯ!</b>\n`;
+    message += `━━━━━━━━━━━━━━━━\n`;
+    message += `📅 <b>Час:</b> ${date}\n`;
+    message += `━━━━━━━━━━━━━━━━\n\n`;
+    
+    message += `👤 <b>ДАНІ КЛІЄНТА:</b>\n`;
+    message += `━━━━━━━━━━━━━━━━\n`;
+    message += `📋 <b>ПІБ:</b> ${customer.lastName} ${customer.firstName} ${customer.middleName || ''}\n`;
+    message += `📱 <b>Телефон:</b> ${customer.phone}\n`;
+    message += `📍 <b>Місто:</b> ${customer.city}\n`;
+    if (customer.address) message += `🏠 <b>Адреса:</b> ${customer.address}\n`;
+    if (customer.comment) message += `💬 <b>Коментар:</b> ${customer.comment}\n`;
+    message += `━━━━━━━━━━━━━━━━\n\n`;
+    
+    message += `📦 <b>ТОВАРИ:</b>\n`;
+    message += `━━━━━━━━━━━━━━━━\n`;
+    
+    cart.forEach((item, i) => {
+        message += `<b>${i+1}. ${item.name_ua}</b>\n`;
+        message += `   📦 Кількість: ${item.quantity}\n`;
+        message += `   💰 Ціна: ${item.price} ${item.currency}\n`;
+        message += `   💵 Сума: ${item.price * item.quantity} ${item.currency}\n\n`;
+    });
+    
+    message += `━━━━━━━━━━━━━━━━\n`;
+    message += `<b>💰 РАЗОМ: ${total} ${cart[0].currency}</b>\n`;
+    
+    return message;
+}
 
-    // Функції теми
-    function setTheme(theme) {
-        currentTheme = theme;
-        localStorage.setItem('theme', theme);
-        document.body.className = theme + '-theme';
-    }
-
-    function toggleTheme() {
-        setTheme(currentTheme === 'light' ? 'dark' : 'light');
-        showNotification('Тему змінено');
-    }
-
-    // Завантаження товарів
-    async function loadProducts() {
-        try {
-            const timestamp = new Date().getTime();
-            const response = await fetch(`data/products.json?t=${timestamp}`, {
-                cache: 'no-store'
-            });
-            
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            
-            products = await response.json();
-            filterProducts('all');
-            animateStats();
-        } catch (error) {
-            console.error('Помилка завантаження:', error);
-            showNotification('Помилка завантаження товарів', 'error');
-            
-            // Тестові дані якщо немає файлу
-            products = [
-                {
-                    id: "test-1",
-                    category: "Світло",
-                    subcategory: "АКБ",
-                    price: 38800,
-                    currency: "грн",
-                    name_ua: "Felicity ESS LPBF 24V 200Ah",
-                    images: ["images/no-image.jpg"],
-                    description_ua: "Літієвий акумулятор"
-                }
-            ];
-            filterProducts('all');
-        }
-    }
-
-    // Telegram
-    async function sendTelegramMessage(cart, customerData) {
-        try {
-            const date = new Date().toLocaleString('uk-UA', {
-                day: '2-digit', month: '2-digit', year: 'numeric',
-                hour: '2-digit', minute: '2-digit'
-            });
-            
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
-            let message = `🛍 <b>НОВЕ ЗАМОВЛЕННЯ!</b>\n`;
-            message += `━━━━━━━━━━━━━━━━\n`;
-            message += `📅 <b>Час:</b> ${date}\n━━━━━━━━━━━━━━━━\n\n`;
-            message += `👤 <b>ДАНІ КЛІЄНТА:</b>\n━━━━━━━━━━━━━━━━\n`;
-            message += `📋 <b>ПІБ:</b> ${customerData.lastName} ${customerData.firstName} ${customerData.middleName || ''}\n`;
-            message += `📱 <b>Телефон:</b> ${customerData.phone}\n`;
-            message += `📍 <b>Місто/Область:</b> ${customerData.city}\n`;
-            if (customerData.address) message += `🏠 <b>Адреса:</b> ${customerData.address}\n`;
-            if (customerData.comment) message += `💬 <b>Коментар:</b> ${customerData.comment}\n`;
-            message += `━━━━━━━━━━━━━━━━\n\n📦 <b>ТОВАРИ:</b>\n━━━━━━━━━━━━━━━━\n`;
-            
-            cart.forEach((item, index) => {
-                message += `<b>${index + 1}. ${item.name_ua}</b>\n`;
-                message += `   📦 Кількість: ${item.quantity}\n`;
-                message += `   💰 Ціна: ${item.price} ${item.currency}\n`;
-                message += `   💵 Сума: ${item.price * item.quantity} ${item.currency}\n\n`;
-            });
-            
-            message += `━━━━━━━━━━━━━━━━\n`;
-            message += `<b>💰 ЗАГАЛОМ: ${total} ${cart[0]?.currency || 'грн'}</b>\n\n`;
-            message += `📱 <b>Viber:</b> ${VIBER_NUMBER}`;
-            
-            const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CHAT_ID,
-                    text: message,
-                    parse_mode: 'HTML'
-                })
-            });
-            
-            const data = await response.json();
-            return data.ok;
-        } catch (error) {
-            console.error('Помилка Telegram:', error);
-            return false;
-        }
-    }
-
-    // Кошик
-    window.addToCart = function(productId) {
-        const product = products.find(p => p.id === productId);
-        if (!product) return;
-        
-        const existingItem = cart.find(item => item.id === productId);
-        
-        if (existingItem) {
-            existingItem.quantity++;
-        } else {
-            cart.push({
-                id: product.id,
-                name_ua: product.name_ua,
-                name_en: product.name_en,
-                price: product.price,
-                currency: product.currency,
-                image: product.images?.[0] || 'images/no-image.jpg',
-                quantity: 1
-            });
-        }
-        
-        saveCart();
-        showNotification('✅ Товар додано до кошика');
+async function handleCheckoutSubmit(e) {
+    e.preventDefault();
+    
+    const customer = {
+        lastName: document.getElementById('lastName').value.trim(),
+        firstName: document.getElementById('firstName').value.trim(),
+        middleName: document.getElementById('middleName').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        city: document.getElementById('city').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        comment: document.getElementById('comment').value.trim()
     };
-
-    window.updateQuantity = function(productId, delta) {
-        const item = cart.find(i => i.id === productId);
-        if (!item) return;
-        
-        item.quantity += delta;
-        if (item.quantity <= 0) {
-            removeFromCart(productId);
-        } else {
-            saveCart();
-        }
-    };
-
-    window.removeFromCart = function(productId) {
-        cart = cart.filter(i => i.id !== productId);
-        saveCart();
-        showNotification('🗑️ Товар видалено з кошика');
-    };
-
-    function updateCartCount() {
-        if (cartCount) {
-            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = count;
-            cartCount.style.animation = 'bounce 0.5s ease';
-            setTimeout(() => cartCount.style.animation = '', 500);
-        }
+    
+    if (!customer.lastName || !customer.firstName || !customer.phone || !customer.city) {
+        showMessage('❌ Заповніть всі обов\'язкові поля', 'error');
+        return;
     }
-
-    function saveCart() {
+    
+    const message = formatOrderMessage(cart, customer);
+    showMessage('📤 Відправка...');
+    
+    const sent = await sendToTelegram(message);
+    
+    if (sent) {
+        showMessage('✅ Замовлення відправлено!');
+        cart = [];
         localStorage.setItem('cart', JSON.stringify(cart));
-        renderCart();
-        updateCartCount();
+        showCart();
+        closeCheckoutModal();
+        e.target.reset();
+    } else {
+        showMessage('❌ Помилка відправки', 'error');
     }
+}
 
-    function renderCart() {
-        if (!cartItems) return;
-        
-        if (cart.length === 0) {
-            cartItems.innerHTML = '<div class="empty-cart">🛒 Кошик порожній</div>';
-            if (cartTotal) cartTotal.innerHTML = '';
-            return;
-        }
-        
-        cartItems.innerHTML = cart.map((item, index) => `
-            <div class="cart-item" style="animation-delay: ${index * 0.1}s">
-                <img src="${item.image}" alt="${item.name_ua}" onerror="this.src='images/no-image.jpg'">
-                <div class="cart-item-info">
-                    <h4>${item.name_ua}</h4>
-                    <div class="cart-item-price">${item.price} ${item.currency}</div>
-                </div>
-                <div class="cart-item-actions">
-                    <button class="qty-btn" onclick="updateQuantity('${item.id}', -1)">−</button>
-                    <span>${item.quantity}</span>
-                    <button class="qty-btn" onclick="updateQuantity('${item.id}', 1)">+</button>
-                    <button class="remove-btn" onclick="removeFromCart('${item.id}')">🗑️</button>
-                </div>
-            </div>
-        `).join('');
-        
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        if (cartTotal) {
-            cartTotal.innerHTML = `<span>Разом:</span> <span class="total-amount">${total.toLocaleString()} ${cart[0]?.currency || 'грн'}</span>`;
-        }
-    }
-
-    function openCart() {
-        cartSidebar?.classList.add('open');
-        overlay?.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeCartSidebar() {
-        cartSidebar?.classList.remove('open');
-        overlay?.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    // Оформлення замовлення
-    function openCheckoutModal() {
-        if (cart.length === 0) {
-            showNotification('🛒 Кошик порожній', 'error');
-            return;
-        }
-        
-        renderCheckoutCart();
-        if (checkoutModalOverlay) {
-            checkoutModalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-    }
-
-    function closeCheckoutModalFunc() {
-        if (checkoutModalOverlay) {
-            checkoutModalOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
-
-    function renderCheckoutCart() {
-        if (!checkoutCartItems) return;
-        
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        
-        checkoutCartItems.innerHTML = cart.map(item => `
-            <div class="checkout-cart-item">
-                <div class="checkout-item-info">
-                    <div class="checkout-item-name">${item.name_ua}</div>
-                    <div class="checkout-item-details">${item.quantity} x ${item.price} ${item.currency}</div>
-                </div>
-                <div class="checkout-item-price">${item.price * item.quantity} ${item.currency}</div>
-            </div>
-        `).join('');
-        
-        if (checkoutTotal) {
-            checkoutTotal.innerHTML = `<span>${total.toLocaleString()} ${cart[0]?.currency || 'грн'}</span>`;
-        }
-    }
-
-    async function handleCheckoutSubmit(e) {
-        e.preventDefault();
-        
-        const customerData = {
-            lastName: document.getElementById('lastName')?.value.trim(),
-            firstName: document.getElementById('firstName')?.value.trim(),
-            middleName: document.getElementById('middleName')?.value.trim(),
-            phone: document.getElementById('phone')?.value.trim(),
-            city: document.getElementById('city')?.value.trim(),
-            address: document.getElementById('address')?.value.trim(),
-            comment: document.getElementById('comment')?.value.trim()
-        };
-        
-        if (!customerData.lastName || !customerData.firstName || !customerData.phone || !customerData.city) {
-            showNotification('❌ Заповніть всі обов\'язкові поля', 'error');
-            return;
-        }
-        
-        showNotification('📤 Відправка замовлення...');
-        const sent = await sendTelegramMessage(cart, customerData);
-        
-        if (sent) {
-            showNotification('✅ Замовлення відправлено!');
-            cart = [];
-            saveCart();
-            closeCheckoutModalFunc();
-            setTimeout(() => window.open(`viber://chat?number=${encodeURIComponent(VIBER_NUMBER)}`, '_blank'), 1000);
-        } else {
-            showNotification('❌ Помилка відправки. Спробуйте ще раз', 'error');
-        }
-    }
-
-    // Фільтрація
-    function filterProducts(filter) {
-        currentFilter = filter;
-        const filtered = filter === 'all' ? products : products.filter(p => p.subcategory === filter);
-        renderProducts(filtered);
-        
-        document.querySelectorAll('.filter-tab').forEach(tab => {
-            tab.classList.toggle('active', tab.dataset.filter === filter);
-        });
-    }
-
-    function renderProducts(productsToRender) {
-        if (!catalogGrid) return;
-        
-        if (!productsToRender || productsToRender.length === 0) {
-            catalogGrid.innerHTML = '<div class="no-products">Товари не знайдені</div>';
-            return;
-        }
-        
-        catalogGrid.innerHTML = productsToRender.map((product, index) => {
-            const imageUrl = product.images?.[0] || 'images/no-image.jpg';
-            const price = product.price > 0 ? `${product.price.toLocaleString()} ${product.currency}` : 'Ціна за запитом';
-            
-            return `
-                <div class="product-card" style="animation-delay: ${index * 0.1}s" onclick="openProductModal('${product.id}')">
-                    <div class="product-image">
-                        <img src="${imageUrl}" alt="${product.name_ua}" loading="lazy" onerror="this.src='images/no-image.jpg'">
-                        <span class="product-badge">${product.subcategory || product.category}</span>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">${product.category}</div>
-                        <h3 class="product-title">${product.name_ua}</h3>
-                        <div class="product-price">${price}</div>
-                        <div class="product-actions">
-                            <button class="btn-buy" onclick="event.stopPropagation(); addToCart('${product.id}')">🛒 Додати</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    // Модальне вікно товару
-    window.openProductModal = function(productId) {
-        const product = products.find(p => p.id === productId);
-        if (!product) return;
-        
-        if (modalContent) {
-            modalContent.innerHTML = `
-                <div class="product-detail">
-                    <div class="product-gallery">
-                        <div class="main-image">
-                            <img src="${product.images?.[0] || 'images/no-image.jpg'}" alt="${product.name_ua}">
-                        </div>
-                    </div>
-                    <div class="product-info-detail">
-                        <h2>${product.name_ua}</h2>
-                        <div class="product-meta">
-                            <span class="product-category-detail">${product.category}</span>
-                            <span class="product-category-detail">${product.subcategory || ''}</span>
-                        </div>
-                        <div class="product-price-detail">${product.price} ${product.currency}</div>
-                        <p class="product-description">${product.description_ua || ''}</p>
-                        <div class="product-actions-detail">
-                            <button class="btn btn-primary" onclick="addToCart('${product.id}')">🛒 Додати в кошик</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            if (modalOverlay) {
-                modalOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
+// ========== СТАТИСТИКА ==========
+function animateStats() {
+    document.querySelectorAll('.stat-number').forEach(s => {
+        let current = 0;
+        const target = parseInt(s.dataset.target);
+        const timer = setInterval(() => {
+            current += target / 50;
+            if (current >= target) {
+                s.textContent = target;
+                clearInterval(timer);
+            } else {
+                s.textContent = Math.floor(current);
             }
-        }
-    };
+        }, 30);
+    });
+}
 
-    function closeProductModal() {
-        if (modalOverlay) {
-            modalOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
-
-    // Статистика
-    function animateStats() {
-        document.querySelectorAll('.stat-number').forEach(stat => {
-            const target = parseInt(stat.dataset.target);
-            let current = 0;
-            const increment = target / 50;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    stat.textContent = target;
-                    clearInterval(timer);
-                } else {
-                    stat.textContent = Math.floor(current);
-                }
-            }, 30);
-        });
-    }
-
-    // Сповіщення
-    function showNotification(message, type = 'success') {
-        const notification = document.createElement('div');
-        notification.className = 'notification';
-        notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed; top: 100px; right: 20px;
-            background: ${type === 'success' ? 'var(--gradient-1)' : '#ff4444'};
-            color: white; padding: 15px 25px; border-radius: 50px;
-            z-index: 2000; animation: slideInRight 0.3s ease-out;
-            font-weight: 600; box-shadow: var(--shadow-glow);
-        `;
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 3000);
-    }
-});
+// ========== СПОВІЩЕННЯ ==========
+function showMessage(text, type = 'success') {
+    const msg = document.createElement('div');
+    msg.className = 'notification';
+    msg.textContent = text;
+    msg.style.background = type === 'success' ? 'var(--gradient-1)' : '#ff4444';
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 2000);
+}
