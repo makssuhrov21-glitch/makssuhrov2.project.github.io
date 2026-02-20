@@ -7,7 +7,7 @@ let currentTheme = localStorage.getItem('theme') || 'light';
 const VIBER_NUMBER = '+380995371400';
 
 const TELEGRAM_TOKEN = '8537676411:AAFsfW7VwQsTubmuLqUbNhHd5IsRjfBGZtg'; 
-const TELEGRAM_CHAT_ID = '1009593325'; // ⚠️ ВСТАВТЕ СЮДИ ПРАВИЛЬНИЙ CHAT ID!
+const TELEGRAM_CHAT_ID = '1009593325'; // ✅ ВАШ ПРАВИЛЬНИЙ ID!
 
 const catalogGrid = document.getElementById('catalog-grid');
 const cartSidebar = document.getElementById('cartSidebar');
@@ -157,12 +157,36 @@ async function checkout() {
     }
 }
 
-// Тестова функція
+// ТЕСТОВА ФУНКЦІЯ
 window.testTelegram = async function() {
-    const testMessage = "🔔 <b>ТЕСТ</b>\nБот працює!";
-    const result = await sendTelegramMessage(testMessage);
-    console.log(result ? '✅ Успішно' : '❌ Помилка');
-    return result;
+    console.log('📤 Тест Telegram...');
+    console.log('Token:', TELEGRAM_TOKEN ? '✅ є' : '❌ немає');
+    console.log('Chat ID:', TELEGRAM_CHAT_ID ? '✅ є' : '❌ немає');
+    
+    try {
+        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: "🔔 <b>ТЕСТ</b>\nБот працює!",
+                parse_mode: 'HTML'
+            })
+        });
+        
+        const data = await response.json();
+        console.log('📥 Відповідь:', data);
+        
+        if (data.ok) {
+            alert('✅ Повідомлення відправлено!');
+        } else {
+            alert('❌ Помилка: ' + data.description);
+        }
+    } catch (error) {
+        console.error('❌ Помилка:', error);
+        alert('❌ Помилка з\'єднання');
+    }
 };
 
 // Анімація статистики
