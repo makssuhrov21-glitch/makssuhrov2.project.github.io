@@ -1,0 +1,84 @@
+[
+  {
+    "id": "felicity-ess-lpbf-24v-200ah",
+    "category": "Світло",
+    "subcategory": "АКБ",
+    "price": 38800,
+    "currency": "грн",
+    "name_ua": "Felicity ESS LPBF 24V 200Ah літієвий акумулятор",
+    "name_en": "Felicity ESS LPBF 24V 200Ah Lithium Battery",
+    "description_ua": "Літієвий акумулятор Felicity ESS LPBF 24V 200Ah — надійне рішення для систем резервного живлення, сонячних електростанцій та автономних систем.",
+    "description_en": "Felicity ESS LPBF 24V 200Ah lithium battery — reliable solution for backup power systems and solar stations.",
+    "images": [
+      "images/feli.jpg",
+      "images/rw.jpg",
+      "images/tele.jpg"
+    ],
+    "specs": {
+      "ua": [
+        ["Тип батареї", "Літієва (LiFePO4)"],
+        ["Напруга", "24V"],
+        ["Ємність", "200Ah"],
+        ["Призначення", "Резервне живлення / СЕС"]
+      ],
+      "en": [
+        ["Battery Type", "Lithium (LiFePO4)"],
+        ["Voltage", "24V"],
+        ["Capacity", "200Ah"],
+        ["Purpose", "Backup power / Solar systems"]
+      ]
+    },
+    "benefits": {
+      "ua": [
+        "Довгий термін служби",
+        "Швидка зарядка",
+        "Висока ефективність"
+      ],
+      "en": [
+        "Long service life",
+        "Fast charging",
+        "High efficiency"
+      ]
+    }
+  },
+  {
+    "id": "must-3-2kw-24v-125ah",
+    "category": "Світло",
+    "subcategory": "ДЖБ",
+    "price": 54000,
+    "currency": "грн",
+    "name_ua": "ДБЖ зарядна станція інвертор Must 3.2 кВт 125Ah 24V",
+    "name_en": "Must 3.2kW 125Ah 24V Inverter Power Station",
+    "description_ua": "ДБЖ та зарядна станція Must 3.2 кВт 24V — потужний інвертор для резервного живлення дому або бізнесу.",
+    "description_en": "Must 3.2kW 24V inverter power station — powerful backup solution for home or business.",
+    "images": [
+      "images/must_3_2kw_1.jpg"
+    ],
+    "specs": {
+      "ua": [
+        ["Потужність", "3.2 кВт"],
+        ["Напруга", "24V"],
+        ["Ємність акумулятора", "125Ah"],
+        ["Тип", "Інвертор / ДБЖ"]
+      ],
+      "en": [
+        ["Power", "3.2 kW"],
+        ["Voltage", "24V"],
+        ["Battery Capacity", "125Ah"],
+        ["Type", "Inverter / UPS"]
+      ]
+    },
+    "benefits": {
+      "ua": [
+        "Підходить для дому та бізнесу",
+        "Захист від перепадів напруги",
+        "Можливість роботи з акумуляторами"
+      ],
+      "en": [
+        "Suitable for home and business",
+        "Voltage surge protection",
+        "Supports external batteries"
+      ]
+    }
+  }
+]
