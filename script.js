@@ -7,8 +7,86 @@ const VIBER_NUMBER = '+380995371400';
 const TELEGRAM_TOKEN = '8537676411:AAFsfW7VwQsTubmuLqUbNhHd5IsRjfBGZtg'; 
 const TELEGRAM_CHAT_ID = '1009593325';
 
+// ТЕСТОВІ ТОВАРИ - будуть показані одразу
+const TEST_PRODUCTS = [
+    {
+        id: "felicity-1",
+        category: "Світло",
+        subcategory: "АКБ",
+        price: 38800,
+        currency: "грн",
+        name_ua: "🔋 Felicity ESS LPBF 24V 200Ah",
+        name_en: "Felicity ESS LPBF 24V 200Ah",
+        description_ua: "Літієвий акумулятор Felicity ESS LPBF 24V 200Ah",
+        images: ["images/no-image.jpg"],
+        specs: {
+            ua: [
+                ["Тип", "LiFePO4"],
+                ["Напруга", "24V"],
+                ["Ємність", "200Ah"]
+            ]
+        }
+    },
+    {
+        id: "must-1",
+        category: "Світло",
+        subcategory: "Інвертор",
+        price: 54000,
+        currency: "грн",
+        name_ua: "⚡ Must 3.2kW 24V Інвертор",
+        name_en: "Must 3.2kW 24V Inverter",
+        description_ua: "Потужний інвертор Must 3.2kW з чистою синусоїдою",
+        images: ["images/no-image.jpg"],
+        specs: {
+            ua: [
+                ["Потужність", "3.2 кВт"],
+                ["Напруга", "24V"],
+                ["Тип", "Чиста синусоїда"]
+            ]
+        }
+    },
+    {
+        id: "hybrid-1",
+        category: "Світло",
+        subcategory: "Гібридний",
+        price: 85000,
+        currency: "грн",
+        name_ua: "🔄 Гібридний інвертор 5kW 48V",
+        name_en: "Hybrid Inverter 5kW 48V",
+        description_ua: "Гібридний інвертор з MPPT контролером",
+        images: ["images/no-image.jpg"],
+        specs: {
+            ua: [
+                ["Потужність", "5 кВт"],
+                ["Напруга", "48V"],
+                ["MPPT", "100A"]
+            ]
+        }
+    },
+    {
+        id: "volts-1",
+        category: "Світло",
+        subcategory: "АКБ",
+        price: 12500,
+        currency: "грн",
+        name_ua: "🔋 Volts AGM 12V 100Ah",
+        name_en: "Volts AGM 12V 100Ah",
+        description_ua: "AGM акумулятор Volts 12V 100Ah",
+        images: ["images/no-image.jpg"],
+        specs: {
+            ua: [
+                ["Тип", "AGM"],
+                ["Напруга", "12V"],
+                ["Ємність", "100Ah"]
+            ]
+        }
+    }
+];
+
 // Отримуємо всі елементи після завантаження DOM
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Сайт завантажено');
+    
     // Отримуємо елементи
     const catalogGrid = document.getElementById('catalog-grid');
     const cartSidebar = document.getElementById('cartSidebar');
@@ -33,7 +111,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Встановлюємо тему
     setTheme(currentTheme);
 
-    // Завантажуємо товари
+    // Відразу показуємо тестові товари
+    products = TEST_PRODUCTS;
+    renderProducts(products);
+    animateStats();
+
+    // Потім пробуємо завантажити з файлу
     loadProducts();
 
     // Відображаємо кошик
@@ -93,29 +176,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 cache: 'no-store'
             });
             
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                console.log('Файл не знайдено, використовую тестові товари');
+                return;
+            }
             
-            products = await response.json();
-            filterProducts('all');
-            animateStats();
+            const loadedProducts = await response.json();
+            if (loadedProducts && loadedProducts.length > 0) {
+                products = loadedProducts;
+                renderProducts(products);
+                console.log('✅ Завантажено товари з файлу:', products.length);
+            }
         } catch (error) {
-            console.error('Помилка завантаження:', error);
-            showNotification('Помилка завантаження товарів', 'error');
-            
-            // Тестові дані якщо немає файлу
-            products = [
-                {
-                    id: "test-1",
-                    category: "Світло",
-                    subcategory: "АКБ",
-                    price: 38800,
-                    currency: "грн",
-                    name_ua: "Felicity ESS LPBF 24V 200Ah",
-                    images: ["images/no-image.jpg"],
-                    description_ua: "Літієвий акумулятор"
-                }
-            ];
-            filterProducts('all');
+            console.log('Помилка завантаження, використовую тестові товари');
         }
     }
 
@@ -390,6 +463,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const product = products.find(p => p.id === productId);
         if (!product) return;
         
+        let specsHTML = '';
+        if (product.specs && product.specs.ua) {
+            specsHTML = '<table class="specs-table">';
+            product.specs.ua.forEach(spec => {
+                specsHTML += `<tr><td>${spec[0]}</td><td>${spec[1]}</td></tr>`;
+            });
+            specsHTML += '</table>';
+        }
+        
         if (modalContent) {
             modalContent.innerHTML = `
                 <div class="product-detail">
@@ -406,6 +488,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                         <div class="product-price-detail">${product.price} ${product.currency}</div>
                         <p class="product-description">${product.description_ua || ''}</p>
+                        ${specsHTML}
                         <div class="product-actions-detail">
                             <button class="btn btn-primary" onclick="addToCart('${product.id}')">🛒 Додати в кошик</button>
                         </div>
@@ -450,13 +533,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const notification = document.createElement('div');
         notification.className = 'notification';
         notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed; top: 100px; right: 20px;
-            background: ${type === 'success' ? 'var(--gradient-1)' : '#ff4444'};
-            color: white; padding: 15px 25px; border-radius: 50px;
-            z-index: 2000; animation: slideInRight 0.3s ease-out;
-            font-weight: 600; box-shadow: var(--shadow-glow);
-        `;
         document.body.appendChild(notification);
         setTimeout(() => notification.remove(), 3000);
     }
