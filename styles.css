@@ -224,9 +224,16 @@ body {
   transform-origin: left;
 }
 
+/* Header Right */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 /* Theme Switch */
 .theme-switch {
-  margin: 0 10px;
+  margin: 0;
 }
 
 .theme-btn {
@@ -240,12 +247,14 @@ body {
   gap: 8px;
   color: var(--text-primary);
   transition: all 0.3s ease;
+  font-size: 16px;
 }
 
 .theme-btn:hover {
   background: var(--gradient-1);
   color: white;
   transform: scale(1.05);
+  border-color: transparent;
 }
 
 .light-theme .dark-icon,
@@ -300,119 +309,20 @@ body {
   transition: transform 0.3s ease;
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after,
+.nav-link.active::after {
   transform: scaleX(1);
   transform-origin: left;
 }
 
-/* Dropdown */
-.dropdown {
-  position: relative;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 200px;
-  border-radius: 16px;
-  padding: 10px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-}
-
-.dropdown:hover .dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.dropdown-item {
-  display: block;
-  padding: 12px 20px;
-  color: var(--text-primary);
-  text-decoration: none;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.dropdown-item::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: var(--gradient-1);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-  z-index: -1;
-  opacity: 0.2;
-}
-
-.dropdown-item:hover::before {
-  width: 300px;
-  height: 300px;
-}
-
-.dropdown-item:hover {
+.nav-link.active {
   color: var(--primary);
-  transform: translateX(5px);
 }
 
-/* Lang switch */
-.lang-switch {
-  display: flex;
-  gap: 5px;
-}
-
-.lang-btn {
-  padding: 8px 12px;
-  border: 1px solid var(--glass-border);
-  background: transparent;
-  color: var(--text-primary);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.lang-btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: var(--gradient-1);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-  z-index: -1;
-}
-
-.lang-btn:hover::before {
-  width: 150px;
-  height: 150px;
-}
-
-.lang-btn:hover {
-  color: white;
-}
-
-.lang-btn.active {
-  background: var(--gradient-1);
-  border-color: transparent;
-  color: white;
+/* Сховати непотрібні елементи */
+.lang-switch,
+.dropdown {
+  display: none !important;
 }
 
 /* Cart button */
@@ -1559,13 +1469,18 @@ body {
   
   .header-content {
     flex-wrap: wrap;
+    gap: 15px;
   }
   
   .nav {
+    order: 2;
+    width: auto;
+    margin: 0;
+  }
+  
+  .header-right {
     order: 3;
-    width: 100%;
-    justify-content: center;
-    margin-top: 10px;
+    margin-left: auto;
   }
   
   .hero {
@@ -1625,6 +1540,10 @@ body {
 }
 
 @media (max-width: 480px) {
+  .logo-text {
+    font-size: 18px;
+  }
+  
   .hero-title {
     font-size: 36px;
   }
@@ -1652,5 +1571,10 @@ body {
   
   .cart-item-actions {
     justify-content: center;
+  }
+  
+  .theme-btn {
+    padding: 6px 12px;
+    font-size: 14px;
   }
 }
