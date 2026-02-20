@@ -1,132 +1,542 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Адмін панель | Winner Znamyanka</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Адмін панель | Winner Znamyanka</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f5f5f5;
-    }
+        body {
+            background: #f5f5f5;
+            color: #333;
+        }
 
-    .admin-header {
-      background: #111;
-      color: #fff;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .admin-header {
+            background: linear-gradient(135deg, #ff6b35, #4a90e2);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
 
-    .admin-header h1 {
-      color: #f1c40f;
-    }
+        .admin-header h1 {
+            font-size: 24px;
+        }
 
-    .admin-actions {
-      display: flex;
-      gap: 10px;
-    }
+        .admin-header a {
+            color: white;
+            text-decoration: none;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
 
-    .admin-actions button,
-    .admin-actions input {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-    }
+        .admin-header a:hover {
+            background: rgba(255,255,255,0.3);
+        }
 
-    .admin-actions button {
-      background: #f1c40f;
-      color: #111;
-    }
+        .admin-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
 
-    .admin-actions button:hover {
-      background: #d4ac0d;
-    }
+        .admin-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
 
-    .admin-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      padding: 20px;
-    }
+        .admin-card h2 {
+            margin-bottom: 20px;
+            color: #ff6b35;
+            font-size: 22px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
 
-    .admin-form,
-    .admin-list {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-    h2 {
-      margin-bottom: 20px;
-      color: #333;
-    }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+            font-size: 14px;
+        }
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-bottom: 15px;
-    }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
 
-    label {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #666;
-    }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
 
-    input,
-    select,
-    textarea {
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 14px;
-    }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
 
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
+        .btn {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
 
-    .images-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin: 15px 0;
-    }
+        .btn:hover {
+            background: #e54e1b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,107,53,0.3);
+        }
 
-    .form-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
+        .btn-secondary {
+            background: #4a90e2;
+        }
 
-    .form-actions button {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-    }
+        .btn-secondary:hover {
+            background: #357abd;
+        }
 
-    .btn-save {
-      background: #f1c40f;
-      color: #111;
-    }
+        .product-item {
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .btn-c
+        .product-info h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .product-info p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .product-price {
+            font-weight: 700;
+            color: #ff6b35;
+        }
+
+        .product-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 0 5px;
+            padding: 5px;
+            transition: 0.3s;
+        }
+
+        .product-actions button:hover {
+            transform: scale(1.2);
+        }
+
+        .edit-btn { color: #4a90e2; }
+        .delete-btn { color: #ff4444; }
+
+        .images-section {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .image-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .image-item {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .specs-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4caf50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <h1>⚡ Адмін панель | Winner Znamyanka</h1>
+        <a href="index.html">← На сайт</a>
+    </header>
+
+    <div class="admin-container">
+        <!-- Форма додавання товару -->
+        <div class="admin-card">
+            <h2>➕ Додати новий товар</h2>
+            <form id="productForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ID товару</label>
+                        <input type="text" id="productId" placeholder="felicity-1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Категорія</label>
+                        <select id="productCategory">
+                            <option value="Світло">Світло</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Підкатегорія</label>
+                        <select id="productSubcategory">
+                            <option value="АКБ">🔋 АКБ</option>
+                            <option value="Інвертор">⚡ Інвертор</option>
+                            <option value="Гібридний">🔄 Гібридний</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ціна (грн)</label>
+                        <input type="number" id="productPrice" placeholder="38800" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Назва (українською)</label>
+                    <input type="text" id="productNameUa" placeholder="Felicity ESS LPBF 24V 200Ah" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Опис (українською)</label>
+                    <textarea id="productDescUa" rows="2" placeholder="Опис товару..."></textarea>
+                </div>
+
+                <div class="images-section">
+                    <label>🖼️ Зображення (шляхи до файлів)</label>
+                    <div class="image-list" id="imageList">
+                        <div class="image-item">
+                            <span>images/</span>
+                            <input type="text" id="image1" placeholder="photo1.jpg" style="width: 100px;">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" style="margin-top: 10px;" onclick="addImageField()">+ Додати ще фото</button>
+                </div>
+
+                <div class="form-group">
+                    <label>📊 Характеристики (кожна з нового рядка, формат: Назва: Значення)</label>
+                    <textarea id="productSpecs" rows="4" placeholder="Тип батареї: LiFePO4
+Напруга: 24V
+Ємність: 200Ah"></textarea>
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%;">💾 Зберегти товар</button>
+            </form>
+        </div>
+
+        <!-- Список товарів -->
+        <div class="admin-card">
+            <h2>📋 Список товарів</h2>
+            <div id="productsList">
+                <p style="text-align: center; color: #999; padding: 20px;">Завантаження...</p>
+            </div>
+            
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-secondary" onclick="exportProducts()" style="flex: 1;">📤 Експорт JSON</button>
+                <button class="btn btn-secondary" onclick="importProducts()" style="flex: 1;">📥 Імпорт JSON</button>
+            </div>
+            <input type="file" id="importFile" accept=".json" style="display: none;">
+        </div>
+    </div>
+
+    <script>
+        let products = [];
+
+        // Завантаження товарів
+        async function loadProducts() {
+            try {
+                const response = await fetch('data/products.json?t=' + Date.now());
+                products = await response.json();
+                renderProducts();
+            } catch (e) {
+                console.log('Файл не знайдено, створюємо тестові товари');
+                products = [
+                    {
+                        id: "felicity-1",
+                        category: "Світло",
+                        subcategory: "АКБ",
+                        price: 38800,
+                        currency: "грн",
+                        name_ua: "🔋 Felicity ESS LPBF 24V 200Ah",
+                        images: ["images/no-image.jpg"],
+                        specs: {
+                            ua: [
+                                ["Тип батареї", "LiFePO4"],
+                                ["Напруга", "24V"],
+                                ["Ємність", "200Ah"]
+                            ]
+                        }
+                    },
+                    {
+                        id: "must-1",
+                        category: "Світло",
+                        subcategory: "Інвертор",
+                        price: 54000,
+                        currency: "грн",
+                        name_ua: "⚡ Must 3.2kW 24V Інвертор",
+                        images: ["images/no-image.jpg"],
+                        specs: {
+                            ua: [
+                                ["Потужність", "3.2 кВт"],
+                                ["Напруга", "24V"],
+                                ["Тип", "Інвертор"]
+                            ]
+                        }
+                    }
+                ];
+                renderProducts();
+            }
+        }
+
+        // Відображення товарів
+        function renderProducts() {
+            const list = document.getElementById('productsList');
+            if (products.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">Немає товарів</p>';
+                return;
+            }
+
+            list.innerHTML = products.map(p => `
+                <div class="product-item">
+                    <div class="product-info">
+                        <h3>${p.name_ua}</h3>
+                        <p>${p.category} • ${p.subcategory} • <span class="product-price">${p.price} ${p.currency}</span></p>
+                    </div>
+                    <div class="product-actions">
+                        <button class="edit-btn" onclick="editProduct('${p.id}')">✏️</button>
+                        <button class="delete-btn" onclick="deleteProduct('${p.id}')">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Додавання товару
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Збираємо характеристики
+            const specsText = document.getElementById('productSpecs').value;
+            const specs = specsText.split('\n')
+                .filter(line => line.trim())
+                .map(line => {
+                    const parts = line.split(':');
+                    return [parts[0].trim(), parts[1]?.trim() || ''];
+                });
+
+            // Збираємо зображення
+            const images = [];
+            for (let i = 1; i <= 5; i++) {
+                const img = document.getElementById(`image${i}`)?.value;
+                if (img) images.push(`images/${img}`);
+            }
+            if (images.length === 0) images.push('images/no-image.jpg');
+
+            const product = {
+                id: document.getElementById('productId').value,
+                category: document.getElementById('productCategory').value,
+                subcategory: document.getElementById('productSubcategory').value,
+                price: parseInt(document.getElementById('productPrice').value),
+                currency: 'грн',
+                name_ua: document.getElementById('productNameUa').value,
+                description_ua: document.getElementById('productDescUa').value,
+                images: images,
+                specs: { ua: specs }
+            };
+
+            // Перевіряємо чи є вже такий ID
+            const index = products.findIndex(p => p.id === product.id);
+            if (index >= 0) {
+                products[index] = product;
+                showMessage('✅ Товар оновлено');
+            } else {
+                products.push(product);
+                showMessage('✅ Товар додано');
+            }
+
+            renderProducts();
+            saveToFile();
+            this.reset();
+        });
+
+        // Видалення товару
+        window.deleteProduct = function(id) {
+            if (confirm('Видалити товар?')) {
+                products = products.filter(p => p.id !== id);
+                renderProducts();
+                saveToFile();
+                showMessage('🗑️ Товар видалено');
+            }
+        };
+
+        // Редагування товару
+        window.editProduct = function(id) {
+            const p = products.find(p => p.id === id);
+            if (!p) return;
+
+            document.getElementById('productId').value = p.id;
+            document.getElementById('productCategory').value = p.category;
+            document.getElementById('productSubcategory').value = p.subcategory;
+            document.getElementById('productPrice').value = p.price;
+            document.getElementById('productNameUa').value = p.name_ua;
+            document.getElementById('productDescUa').value = p.description_ua || '';
+
+            if (p.specs?.ua) {
+                const specsText = p.specs.ua.map(s => s.join(': ')).join('\n');
+                document.getElementById('productSpecs').value = specsText;
+            }
+
+            if (p.images) {
+                p.images.forEach((img, i) => {
+                    const imgInput = document.getElementById(`image${i+1}`);
+                    if (imgInput) {
+                        const fileName = img.replace('images/', '');
+                        imgInput.value = fileName;
+                    }
+                });
+            }
+
+            showMessage('✏️ Редагування товару');
+        };
+
+        // Збереження в файл
+        function saveToFile() {
+            localStorage.setItem('admin_products', JSON.stringify(products));
+            
+            // Показуємо як зберегти
+            showMessage('💾 Товари збережено в localStorage. Натисніть "Експорт JSON" для завантаження файлу');
+        }
+
+        // Експорт JSON
+        window.exportProducts = function() {
+            const dataStr = JSON.stringify(products, null, 2);
+            const blob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'products.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            showMessage('📥 Файл products.json завантажено');
+        };
+
+        // Імпорт JSON
+        window.importProducts = function() {
+            document.getElementById('importFile').click();
+        };
+
+        document.getElementById('importFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    products = JSON.parse(e.target.result);
+                    renderProducts();
+                    showMessage('✅ Товари імпортовано');
+                } catch (err) {
+                    showMessage('❌ Помилка в JSON', 'error');
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Додавання поля для зображення
+        window.addImageField = function() {
+            const list = document.getElementById('imageList');
+            const count = list.children.length + 1;
+            if (count > 5) {
+                showMessage('❌ Максимум 5 фото', 'error');
+                return;
+            }
+            const div = document.createElement('div');
+            div.className = 'image-item';
+            div.innerHTML = `
+                <span>images/</span>
+                <input type="text" id="image${count}" placeholder="photo${count}.jpg" style="width: 100px;">
+                <button type="button" onclick="this.parentElement.remove()" style="background:none; border:none; cursor:pointer; color:#ff4444;">×</button>
+            `;
+            list.appendChild(div);
+        };
+
+        // Сповіщення
+        function showMessage(text, type = 'success') {
+            const msg = document.createElement('div');
+            msg.className = 'notification';
+            msg.textContent = text;
+            msg.style.background = type === 'success' ? '#4caf50' : '#ff4444';
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 3000);
+        }
+
+        // Завантажуємо товари при старті
+        loadProducts();
+    </script>
+</body>
+</html>
