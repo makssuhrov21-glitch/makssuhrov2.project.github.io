@@ -61,7 +61,7 @@
     "name_en": "Must 3.2kW 24V Inverter",
     "description_ua": "Потужний інвертор Must 3.2kW з чистою синусоїдою. Ідеальне рішення для резервного живлення будинку або офісу. Має вбудований зарядний пристрій та режим bypass.",
     "description_en": "Must 3.2kW Pure Sine Wave Inverter. Perfect solution for home or office backup power.",
-    "images": ["images/must_3_2kw_1.jpg", "images/must_3_2kw_2.jpg"]
+    "images": ["images/must_3_2kw_1.jpg", "images/must_3_2kw_2.jpg"],
     "specs": {
       "ua": [
         ["Потужність", "3.2 кВт"],
