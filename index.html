@@ -6,7 +6,7 @@
   <title>Winner Znamyanka | Світло</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="light-theme">
   <!-- 3D Background -->
   <div class="bg-3d">
     <div class="sphere sphere-1"></div>
@@ -36,6 +36,14 @@
           </div>
         </div>
       </nav>
+      
+      <!-- Кнопка перемикання теми -->
+      <div class="theme-switch">
+        <button id="themeToggle" class="theme-btn">
+          <span class="light-icon">☀️</span>
+          <span class="dark-icon">🌙</span>
+        </button>
+      </div>
       
       <div class="lang-switch">
         <button id="lang-uk" class="lang-btn active">🇺🇦</button>
@@ -94,11 +102,11 @@
       <div class="stat-label">Проданих систем</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number" data-target="15">0</div>
+      <div class="stat-number" data-target="50">0</div>
       <div class="stat-label">Моделей</div>
     </div>
     <div class="stat-item">
-      <div class="stat-number" data-target="500">0</div>
+      <div class="stat-number" data-target="100">0</div>
       <div class="stat-label">% задоволених</div>
     </div>
   </section>
@@ -148,6 +156,14 @@
       <button class="btn btn-primary" id="checkoutBtn" style="display: none;">Оформити</button>
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>⚡ Winner Znamyanka — Енергія вашого дому</p>
+      <p>© 2024 Всі права захищено</p>
+    </div>
+  </footer>
 
   <!-- Overlay -->
   <div class="overlay" id="overlay"></div>
