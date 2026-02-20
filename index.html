@@ -147,7 +147,7 @@
     </div>
   </div>
 
-  <!-- Footer -->
+   <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <p>⚡ Winner Znamyanka — Енергія вашого дому</p>
@@ -158,6 +158,74 @@
   <!-- Overlay -->
   <div class="overlay" id="overlay"></div>
 
+  <!-- Модальне вікно для оформлення замовлення -->
+  <div class="checkout-modal-overlay" id="checkoutModalOverlay">
+    <div class="checkout-modal-container glass">
+      <div class="checkout-modal-header">
+        <h2>📝 Оформлення замовлення</h2>
+        <button class="checkout-modal-close" id="closeCheckoutModal">×</button>
+      </div>
+      <div class="checkout-modal-body">
+        <form id="checkoutForm">
+          <div class="form-group">
+            <label for="lastName">Прізвище <span class="required">*</span></label>
+            <input type="text" id="lastName" name="lastName" placeholder="Іванов" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="firstName">Ім'я <span class="required">*</span></label>
+            <input type="text" id="firstName" name="firstName" placeholder="Іван" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="middleName">По батькові</label>
+            <input type="text" id="middleName" name="middleName" placeholder="Іванович">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group half">
+              <label for="phone">Номер телефону <span class="required">*</span></label>
+              <input type="tel" id="phone" name="phone" placeholder="+380991234567" required>
+            </div>
+            
+            <div class="form-group half">
+              <label for="city">Місто/Область <span class="required">*</span></label>
+              <input type="text" id="city" name="city" placeholder="Київська обл., Київ" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="address">Адреса (вулиця, будинок, квартира)</label>
+            <input type="text" id="address" name="address" placeholder="вул. Хрещатик, 1, кв. 50">
+          </div>
+          
+          <div class="form-group">
+            <label for="comment">Коментар до замовлення</label>
+            <textarea id="comment" name="comment" rows="3" placeholder="Додаткова інформація..."></textarea>
+          </div>
+          
+          <div class="order-summary">
+            <h3>Ваше замовлення:</h3>
+            <div id="checkoutCartItems"></div>
+            <div class="order-total" id="checkoutTotal"></div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary submit-btn">
+              📤 Підтвердити замовлення
+            </button>
+            <button type="button" class="btn btn-outline" id="cancelCheckout">
+              Скасувати
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
+</body>
+</html>
+  
 </body>
 </html>
