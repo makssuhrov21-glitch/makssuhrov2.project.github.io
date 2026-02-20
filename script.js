@@ -7,7 +7,7 @@ let currentTheme = localStorage.getItem('theme') || 'light';
 const VIBER_NUMBER = '+380995371400';
 
 const TELEGRAM_TOKEN = '8537676411:AAFsfW7VwQsTubmuLqUbNhHd5IsRjfBGZtg'; 
-const TELEGRAM_CHAT_ID = '1009593325'; // ✅ ВАШ ПРАВИЛЬНИЙ ID!
+const TELEGRAM_CHAT_ID = '1009593325','8496316075'; // ✅ ВАШ ПРАВИЛЬНИЙ ID!
 
 const catalogGrid = document.getElementById('catalog-grid');
 const cartSidebar = document.getElementById('cartSidebar');
