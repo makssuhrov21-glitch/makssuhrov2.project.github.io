@@ -27,39 +27,29 @@
       
       <nav class="nav">
         <a href="#catalog" class="nav-link active" data-text="Каталог">Каталог</a>
-        <div class="dropdown">
-          <a href="#" class="nav-link" data-text="Світло">Світло</a>
-          <div class="dropdown-menu glass">
-            <a href="#catalog" data-filter="АКБ" class="dropdown-item">🔋 АКБ</a>
-            <a href="#catalog" data-filter="Інвертор" class="dropdown-item">⚡ Інвертор</a>
-            <a href="#catalog" data-filter="Гібридний" class="dropdown-item">🔄 Гібридний</a>
-          </div>
-        </div>
+        <a href="#catalog" data-filter="Світло" class="nav-link" data-text="Світло">Світло</a>
       </nav>
       
-      <!-- Кнопка перемикання теми -->
-      <div class="theme-switch">
-        <button id="themeToggle" class="theme-btn">
-          <span class="light-icon">☀️</span>
-          <span class="dark-icon">🌙</span>
+      <div class="header-right">
+        <!-- Кнопка перемикання теми -->
+        <div class="theme-switch">
+          <button id="themeToggle" class="theme-btn">
+            <span class="light-icon">☀️</span>
+            <span class="dark-icon">🌙</span>
+          </button>
+        </div>
+        
+        <button class="cart-btn" id="cartToggle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M8 22C9.10457 22 10 21.1046 10 20C10 18.8954 9.10457 18 8 18C6.89543 18 6 18.8954 6 20C6 21.1046 6.89543 22 8 22Z" fill="#f1c40f"/>
+            <path d="M20 22C21.1046 22 22 21.1046 22 20C22 18.8954 21.1046 18 20 18C18.8954 18 18 18.8954 18 20C18 21.1046 18.8954 22 20 22Z" fill="#f1c40f"/>
+            <path d="M3 3H6L7 9H21L23 6H7.5" stroke="#f1c40f" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="7" cy="20" r="1.5" fill="white" stroke="#f1c40f"/>
+            <circle cx="20" cy="20" r="1.5" fill="white" stroke="#f1c40f"/>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
         </button>
       </div>
-      
-      <div class="lang-switch">
-        <button id="lang-uk" class="lang-btn active">🇺🇦</button>
-        <button id="lang-en" class="lang-btn">🇬🇧</button>
-      </div>
-      
-      <button class="cart-btn" id="cartToggle">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M8 22C9.10457 22 10 21.1046 10 20C10 18.8954 9.10457 18 8 18C6.89543 18 6 18.8954 6 20C6 21.1046 6.89543 22 8 22Z" fill="#f1c40f"/>
-          <path d="M20 22C21.1046 22 22 21.1046 22 20C22 18.8954 21.1046 18 20 18C18.8954 18 18 18.8954 18 20C18 21.1046 18.8954 22 20 22Z" fill="#f1c40f"/>
-          <path d="M3 3H6L7 9H21L23 6H7.5" stroke="#f1c40f" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="7" cy="20" r="1.5" fill="white" stroke="#f1c40f"/>
-          <circle cx="20" cy="20" r="1.5" fill="white" stroke="#f1c40f"/>
-        </svg>
-        <span class="cart-count" id="cartCount">0</span>
-      </button>
     </div>
   </header>
 
