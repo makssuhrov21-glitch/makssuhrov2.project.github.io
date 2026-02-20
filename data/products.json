@@ -5,117 +5,127 @@
     "subcategory": "АКБ",
     "price": 38800,
     "currency": "грн",
-    "name_ua": "Felicity ESS LPBF 24V 200Ah",
-    "name_en": "Felicity ESS LPBF 24V 200Ah",
-    "description_ua": "Літієвий акумулятор Felicity ESS LPBF 24V 200Ah — надійне рішення для систем резервного живлення.",
-    "description_en": "Felicity ESS LPBF 24V 200Ah lithium battery",
-    "images": ["images/feli.jpg", "images/rw.jpg", "images/tele.jpg"],
+    "name_ua": "Felicity ESS LPBF 24V 200Ah літієвий акумулятор",
+    "name_en": "Felicity ESS LPBF 24V 200Ah Lithium Battery",
+    "description_ua": "Літієвий акумулятор Felicity ESS LPBF 24V 200Ah — надійне рішення для систем резервного живлення, сонячних електростанцій та автономних систем.",
+    "description_en": "Felicity ESS LPBF 24V 200Ah lithium battery — reliable solution for backup power systems and solar stations.",
+    "images": [
+      "images/feli.jpg",
+      "images/rw.jpg",
+      "images/tele.jpg"
+    ],
     "specs": {
       "ua": [
-        ["Тип батареї", "Літієва (LiFePO4)"],
-        ["Напруга", "24V"],
-        ["Ємність", "200Ah"]
+        [
+          "Тип батареї",
+          "Літієва (LiFePO4)"
+        ],
+        [
+          "Напруга",
+          "24V"
+        ],
+        [
+          "Ємність",
+          "200Ah"
+        ],
+        [
+          "Призначення",
+          "Резервне живлення / СЕС"
+        ]
       ],
       "en": [
-        ["Battery Type", "Lithium (LiFePO4)"],
-        ["Voltage", "24V"],
-        ["Capacity", "200Ah"]
+        [
+          "Battery Type",
+          "Lithium (LiFePO4)"
+        ],
+        [
+          "Voltage",
+          "24V"
+        ],
+        [
+          "Capacity",
+          "200Ah"
+        ],
+        [
+          "Purpose",
+          "Backup power / Solar systems"
+        ]
+      ]
+    },
+    "benefits": {
+      "ua": [
+        "Довгий термін служби",
+        "Швидка зарядка",
+        "Висока ефективність"
+      ],
+      "en": [
+        "Long service life",
+        "Fast charging",
+        "High efficiency"
       ]
     }
   },
   {
-    "id": "must-3-2kw-24v",
+    "id": "must-3-2kw-24v-125ah",
     "category": "Світло",
-    "subcategory": "Інвертор",
+    "subcategory": "ДЖБ",
     "price": 54000,
     "currency": "грн",
-    "name_ua": "Must 3.2kW 24V Інвертор",
-    "name_en": "Must 3.2kW 24V Inverter",
-    "description_ua": "Потужний інвертор Must 3.2kW з чистою синусоїдою.",
-    "description_en": "Must 3.2kW Pure Sine Wave Inverter",
-    "images": ["images/must_3_2kw_1.jpg"],
+    "name_ua": "ДБЖ зарядна станція інвертор Must 3.2 кВт 125Ah 24V",
+    "name_en": "Must 3.2kW 125Ah 24V Inverter Power Station",
+    "description_ua": "ДБЖ та зарядна станція Must 3.2 кВт 24V — потужний інвертор для резервного живлення дому або бізнесу.",
+    "description_en": "Must 3.2kW 24V inverter power station — powerful backup solution for home or business.",
+    "images": [
+      "images/must_3_2kw_1.jpg"
+    ],
     "specs": {
       "ua": [
-        ["Потужність", "3.2 кВт"],
-        ["Напруга", "24V"],
-        ["Тип", "Інвертор"]
+        [
+          "Потужність",
+          "3.2 кВт"
+        ],
+        [
+          "Напруга",
+          "24V"
+        ],
+        [
+          "Ємність акумулятора",
+          "125Ah"
+        ],
+        [
+          "Тип",
+          "Інвертор / ДБЖ"
+        ]
       ],
       "en": [
-        ["Power", "3.2 kW"],
-        ["Voltage", "24V"],
-        ["Type", "Inverter"]
+        [
+          "Power",
+          "3.2 kW"
+        ],
+        [
+          "Voltage",
+          "24V"
+        ],
+        [
+          "Battery Capacity",
+          "125Ah"
+        ],
+        [
+          "Type",
+          "Inverter / UPS"
+        ]
       ]
-    }
-  },
-  {
-    "id": "hybrid-5kw-48v",
-    "category": "Світло",
-    "subcategory": "Гібридний",
-    "price": 85000,
-    "currency": "грн",
-    "name_ua": "Гібридний інвертор 5kW 48V",
-    "name_en": "Hybrid Inverter 5kW 48V",
-    "description_ua": "Гібридний інвертор з вбудованим MPPT контролером.",
-    "description_en": "Hybrid inverter with MPPT controller",
-    "images": ["images/hybrid.jpg"],
-    "specs": {
+    },
+    "benefits": {
       "ua": [
-        ["Потужність", "5 кВт"],
-        ["Напруга", "48V"],
-        ["Тип", "Гібридний"]
+        "Підходить для дому та бізнесу",
+        "Захист від перепадів напруги",
+        "Можливість роботи з акумуляторами"
       ],
       "en": [
-        ["Power", "5 kW"],
-        ["Voltage", "48V"],
-        ["Type", "Hybrid"]
-      ]
-    }
-  },
-  {
-    "id": "volts-agm-12v-100ah",
-    "category": "Світло",
-    "subcategory": "АКБ",
-    "price": 12500,
-    "currency": "грн",
-    "name_ua": "Volts AGM 12V 100Ah",
-    "name_en": "Volts AGM 12V 100Ah",
-    "description_ua": "AGM акумулятор Volts 12V 100Ah для систем резервного живлення.",
-    "description_en": "Volts AGM Battery 12V 100Ah",
-    "images": ["images/volts.jpg"],
-    "specs": {
-      "ua": [
-        ["Тип", "AGM"],
-        ["Напруга", "12V"],
-        ["Ємність", "100Ah"]
-      ],
-      "en": [
-        ["Type", "AGM"],
-        ["Voltage", "12V"],
-        ["Capacity", "100Ah"]
-      ]
-    }
-  },
-  {
-    "id": "growatt-3000-spf",
-    "category": "Світло",
-    "subcategory": "Гібридний",
-    "price": 32000,
-    "currency": "грн",
-    "name_ua": "Growatt SPF 3000TL",
-    "name_en": "Growatt SPF 3000TL",
-    "description_ua": "Гібридний інвертор Growatt 3kW з MPPT контролером.",
-    "description_en": "Growatt 3kW Hybrid Inverter",
-    "images": ["images/growatt.jpg"],
-    "specs": {
-      "ua": [
-        ["Потужність", "3 кВт"],
-        ["Напруга", "24V"],
-        ["Тип", "Гібридний"]
-      ],
-      "en": [
-        ["Power", "3 kW"],
-        ["Voltage", "24V"],
-        ["Type", "Hybrid"]
+        "Suitable for home and business",
+        "Voltage surge protection",
+        "Supports external batteries"
       ]
     }
   }
