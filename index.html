@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Winner Znamyanka</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo">Winner Znamyanka</div>
+    <nav>
+      <ul class="menu" id="main-menu">
+        <li><a href="index.html#catalog" data-lang-uk="Каталог" data-lang-en="Catalog">Каталог</a></li>
+        <li class="has-sub"><a href="moto.html" data-lang-uk="Мото" data-lang-en="Moto">Мото ▾</a>
+          <ul class="submenu">
+            <li><a href="moto.html#ендуро">Ендуро</a></li>
+            <li><a href="moto.html#пітбайк">Пітбайк</a></li>
+            <li><a href="moto.html#дорожні">Дорожні</a></li>
+            <li><a href="moto.html#скутери">Скутери</a></li>
+          </ul>
+        </li>
+        <li><a href="#" data-filter="Агро">Агро</a></li>
+        <li><a href="#" data-filter="Вело">Вело</a></li>
+        <li><a href="#" data-filter="Електро">Електро</a></li>
+      </ul>
+    </nav>
+    <div class="lang-switch">
+      <button id="lang-uk">🇺🇦</button>
+      <button id="lang-en">🇬🇧</button>
+    </div>
+  </header>
+
+  <section class="banner">
+    <div class="inner">
+      <h1 data-lang-uk="Winner Znamyanka — Магазин Мото, Вело, Агро та Електротехніки"
+          data-lang-en="Winner Znamyanka — Moto, Velo, Agro & Electric Store">
+          Winner Znamyanka — Магазин Мото, Вело, Агро та Електротехніки
+      </h1>
+      <p data-lang-uk="Оберіть категорію або перегляньте каталог нижче."
+         data-lang-en="Choose a category or browse the catalog below.">
+         Оберіть категорію або перегляньте каталог нижче.
+      </p>
+      <div class="cta">
+        <button class="btn" data-go="moto"><svg viewBox="0 0 24 24" class="ico" xmlns="http://www.w3.org/2000/svg"><path d="M3 17a3 3 0 1 0 6 0H7a4 4 0 0 1 4-4h3l2-3h2l-2 3h2a4 4 0 0 1 4 4h-2a3 3 0 1 0-6 0h-4a3 3 0 1 0-6 0z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Мото</span></button>
+        <button class="btn" data-filter="Агро"><svg viewBox="0 0 24 24" class="ico" xmlns="http://www.w3.org/2000/svg"><path d="M3 15h10l3-4h5M5 15v4m6-4v4m6-7v7M2 19h20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Агро</span></button>
+        <button class="btn" data-filter="Вело"><svg viewBox="0 0 24 24" class="ico" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="18" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 17l3-7h4l4 7M13 10l-2-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Вело</span></button>
+        <button class="btn" data-filter="Електро"><svg viewBox="0 0 24 24" class="ico" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14h7l-1 8 11-12h-7l0-8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Електро</span></button>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section id="catalog" class="container">
+      <h2 data-lang-uk="Каталог" data-lang-en="Catalog">Каталог</h2>
+      <div class="cat-icons">
+        <button class="cat-btn" data-go="moto"><svg viewBox="0 0 24 24" class="ico" xmlns="http://www.w3.org/2000/svg"><path d="M3 17a3 3 0 1 0 6 0H7a4 4 0 0 1 4-4h3l2-3h2l-2 3h2a4 4 0 0 1 4 4h-2a3 3 0 1 0-6 0h-4a3 3 0 1 0-6 0z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Мото</span></button>
+        <button class="cat-btn" data-filter="Агро"><svg viewBox="0 0 24 24" class="ico" xmlns="http://www.w3.org/2000/svg"><path d="M3 15h10l3-4h5M5 15v4m6-4v4m6-7v7M2 19h20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Агро</span></button>
+        <button class="cat-btn" data-filter="Вело"><svg viewBox="0 0 24 24" class="ico" xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="18" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 17l3-7h4l4 7M13 10l-2-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Вело</span></button>
+        <button class="cat-btn" data-filter="Електро"><svg viewBox="0 0 24 24" class="ico" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14h7l-1 8 11-12h-7l0-8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Електро</span></button>
+      </div>
+      <div id="catalog-grid" class="grid"></div>
+    </section>
+
+    <section id="cart-section" class="container">
+      <h2 data-lang-uk="🛒 Корзина" data-lang-en="🛒 Cart">🛒 Корзина</h2>
+      <div id="cart"></div>
+      <div id="cart-totals"></div>
+      <button id="checkout-btn" class="btn btn-primary" style="display:none;"
+        data-lang-uk="Оформити замовлення" data-lang-en="Checkout">Оформити замовлення</button>
+    </section>
+  </main>
+
+  <footer>
+    <p data-lang-uk="Winner Znamyanka — ФОП. Всі права захищено."
+       data-lang-en="Winner Znamyanka — Sole Proprietorship. All rights reserved.">
+       Winner Znamyanka — ФОП. Всі права захищено.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
