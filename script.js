@@ -32,6 +32,73 @@ const products = [
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 let currentTheme = localStorage.getItem('theme') || 'light';
 
+// ========== TELEGRAM НАЛАШТУВАННЯ ==========
+const TELEGRAM_TOKEN = '8537676411:AAFsfW7VwQsTubmuLqUbNhHd5IsRjfBGZtg';
+const TELEGRAM_CHAT_ID = '1009593325';
+
+// ========== ФУНКЦІЯ ВІДПРАВКИ В TELEGRAM ==========
+async function sendToTelegram(message) {
+    try {
+        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'HTML'
+            })
+        });
+        
+        const data = await response.json();
+        if (data.ok) {
+            showMessage('✅ Замовлення відправлено в Telegram');
+            return true;
+        } else {
+            showMessage('❌ Помилка Telegram', 'error');
+            return false;
+        }
+    } catch (error) {
+        console.error('Telegram error:', error);
+        showMessage('❌ Помилка відправки', 'error');
+        return false;
+    }
+}
+
+// ========== ФОРМАТУВАННЯ ЗАМОВЛЕННЯ ==========
+function formatOrderMessage(cart) {
+    const date = new Date().toLocaleString('uk-UA', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    
+    const total = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+    
+    let message = `🛍 <b>НОВЕ ЗАМОВЛЕННЯ!</b>\n`;
+    message += `━━━━━━━━━━━━━━━━\n`;
+    message += `📅 <b>Час:</b> ${date}\n`;
+    message += `━━━━━━━━━━━━━━━━\n\n`;
+    message += `📦 <b>ТОВАРИ:</b>\n`;
+    message += `━━━━━━━━━━━━━━━━\n`;
+    
+    cart.forEach((item, i) => {
+        message += `<b>${i+1}. ${item.name_ua}</b>\n`;
+        message += `   📦 Кількість: ${item.quantity}\n`;
+        message += `   💰 Ціна: ${item.price} ${item.currency}\n`;
+        message += `   💵 Сума: ${item.price * item.quantity} ${item.currency}\n\n`;
+    });
+    
+    message += `━━━━━━━━━━━━━━━━\n`;
+    message += `<b>💰 РАЗОМ: ${total} ${cart[0].currency}</b>\n`;
+    
+    return message;
+}
+
 // ========== ОСНОВНІ ФУНКЦІЇ ==========
 document.addEventListener('DOMContentLoaded', function() {
     // Встановлюємо тему
@@ -61,13 +128,15 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('closeCart')?.addEventListener('click', closeCart);
     document.getElementById('overlay')?.addEventListener('click', closeCart);
     
-    // Кнопка оформлення
-    document.getElementById('checkoutBtn')?.addEventListener('click', function() {
+    // Кнопка оформлення (оновлена)
+    document.getElementById('checkoutBtn')?.addEventListener('click', async function() {
         if (cart.length === 0) {
             showMessage('🛒 Кошик порожній', 'error');
             return;
         }
-        showMessage('📞 Телефонуйте: +380995371400');
+        
+        const message = formatOrderMessage(cart);
+        await sendToTelegram(message);
     });
     
     // Статистика
@@ -84,7 +153,7 @@ function showProducts() {
     if (!grid) return;
     
     grid.innerHTML = products.map((p, i) => `
-        <div class="product-card" style="animation-delay: ${i * 0.1}s">
+        <div class="product-card" style="animation-delay: ${i * 0.1}s" onclick="openProductModal('${p.id}')">
             <div class="product-image">
                 <img src="${p.images[0]}" alt="${p.name_ua}">
                 <span class="product-badge">${p.subcategory}</span>
@@ -94,12 +163,55 @@ function showProducts() {
                 <h3 class="product-title">${p.name_ua}</h3>
                 <div class="product-price">${p.price} ${p.currency}</div>
                 <div class="product-actions">
-                    <button class="btn-buy" onclick="addToCart('${p.id}')">🛒 Додати</button>
+                    <button class="btn-buy" onclick="event.stopPropagation(); addToCart('${p.id}')">🛒 Додати</button>
                 </div>
             </div>
         </div>
     `).join('');
 }
+
+// ========== МОДАЛЬНЕ ВІКНО ТОВАРУ ==========
+window.openProductModal = function(id) {
+    const p = products.find(p => p.id === id);
+    if (!p) return;
+    
+    const modal = document.getElementById('modalContent');
+    const overlay = document.getElementById('modalOverlay');
+    if (!modal || !overlay) return;
+    
+    modal.innerHTML = `
+        <div class="product-detail">
+            <div class="product-gallery">
+                <div class="main-image">
+                    <img src="${p.images[0]}" alt="${p.name_ua}">
+                </div>
+            </div>
+            <div class="product-info-detail">
+                <h2>${p.name_ua}</h2>
+                <div class="product-price-detail">${p.price} ${p.currency}</div>
+                <div class="product-actions-detail">
+                    <button class="btn btn-primary" onclick="addToCart('${p.id}')">🛒 Додати в кошик</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+// Закриття модального вікна
+document.getElementById('closeModal')?.addEventListener('click', function() {
+    document.getElementById('modalOverlay')?.classList.remove('active');
+    document.body.style.overflow = '';
+});
+
+document.getElementById('modalOverlay')?.addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
 
 function showCart() {
     const cartEl = document.getElementById('cartItems');
@@ -183,6 +295,7 @@ function showMessage(text, type = 'success') {
     const msg = document.createElement('div');
     msg.className = 'notification';
     msg.textContent = text;
+    msg.style.background = type === 'success' ? 'var(--gradient-1)' : '#ff4444';
     document.body.appendChild(msg);
     setTimeout(() => msg.remove(), 2000);
 }
