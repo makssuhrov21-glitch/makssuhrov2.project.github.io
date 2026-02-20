@@ -1,26 +1,77 @@
-:root {
+/* Світла тема (за замовчуванням) */
+.light-theme {
+  --primary: #ff6b35; /* Оранжевий */
+  --primary-light: #ff8c5a;
+  --primary-dark: #e54e1b;
+  --secondary: #4a90e2; /* Синій */
+  --secondary-light: #6ba6ff;
+  --accent: #ff4d6d; /* Рожевий */
+  --accent-light: #ff758f;
+  
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #f1f3f5;
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-muted: #868e96;
+  --border-color: #e9ecef;
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 30px rgba(255, 107, 53, 0.2);
+  --gradient-1: linear-gradient(135deg, var(--primary), var(--secondary));
+  --gradient-2: linear-gradient(135deg, var(--secondary), var(--accent));
+  --gradient-3: linear-gradient(135deg, var(--accent), var(--primary));
+  
+  --sphere-opacity: 0.1;
+  --grid-opacity: 0.03;
+  --nav-bg: rgba(255, 255, 255, 0.9);
+  --footer-bg: #f8f9fa;
+}
+
+/* Темна тема */
+.dark-theme {
   --primary: #f1c40f;
   --primary-dark: #d4ac0d;
-  --bg-dark: #0a0a0f;
-  --bg-darker: #050507;
-  --text: #ffffff;
+  --secondary: #00ffff;
+  --accent: #ff00ff;
+  
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #1a1a1f;
+  --bg-tertiary: #2a2a2f;
+  --text-primary: #ffffff;
   --text-secondary: #b0b0b0;
+  --text-muted: #808080;
+  --border-color: #333333;
+  --card-bg: rgba(30, 30, 35, 0.9);
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
   --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
   --shadow-glow: 0 0 30px rgba(241, 196, 15, 0.3);
+  --gradient-1: linear-gradient(135deg, var(--primary), var(--secondary));
+  --gradient-2: linear-gradient(135deg, var(--secondary), var(--accent));
+  --gradient-3: linear-gradient(135deg, var(--accent), var(--primary));
+  
+  --sphere-opacity: 0.15;
+  --grid-opacity: 0.03;
+  --nav-bg: rgba(10, 10, 15, 0.8);
+  --footer-bg: #0a0a0f;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  background: var(--bg-dark);
-  color: var(--text);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
@@ -40,33 +91,33 @@ body {
 .sphere {
   position: absolute;
   border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.15;
+  filter: blur(80px);
+  opacity: var(--sphere-opacity);
   animation: float 20s infinite ease-in-out;
 }
 
 .sphere-1 {
-  width: 400px;
-  height: 400px;
+  width: 500px;
+  height: 500px;
   background: var(--primary);
-  top: -100px;
+  top: -150px;
   right: -100px;
   animation-delay: 0s;
 }
 
 .sphere-2 {
-  width: 300px;
-  height: 300px;
-  background: #00ffff;
+  width: 400px;
+  height: 400px;
+  background: var(--secondary);
   bottom: 50px;
-  left: -50px;
+  left: -100px;
   animation-delay: -5s;
 }
 
 .sphere-3 {
-  width: 200px;
-  height: 200px;
-  background: #ff00ff;
+  width: 300px;
+  height: 300px;
+  background: var(--accent);
   bottom: 200px;
   right: 200px;
   animation-delay: -10s;
@@ -79,9 +130,10 @@ body {
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(var(--border-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
   background-size: 50px 50px;
+  opacity: var(--grid-opacity);
   animation: gridMove 30s linear infinite;
 }
 
@@ -112,6 +164,9 @@ body {
   width: 100%;
   z-index: 100;
   padding: 20px 40px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .header-content {
@@ -141,10 +196,13 @@ body {
   font-size: 24px;
   font-weight: 800;
   letter-spacing: 2px;
+  color: var(--text-primary);
 }
 
 .accent {
-  color: var(--primary);
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   position: relative;
 }
 
@@ -155,7 +213,7 @@ body {
   left: 0;
   width: 100%;
   height: 2px;
-  background: var(--primary);
+  background: var(--gradient-1);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.5s ease;
@@ -166,6 +224,35 @@ body {
   transform-origin: left;
 }
 
+/* Theme Switch */
+.theme-switch {
+  margin: 0 10px;
+}
+
+.theme-btn {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 30px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.theme-btn:hover {
+  background: var(--gradient-1);
+  color: white;
+  transform: scale(1.05);
+}
+
+.light-theme .dark-icon,
+.dark-theme .light-icon {
+  display: none;
+}
+
 /* Navigation */
 .nav {
   display: flex;
@@ -174,7 +261,7 @@ body {
 }
 
 .nav-link {
-  color: var(--text);
+  color: var(--text-primary);
   text-decoration: none;
   font-weight: 500;
   padding: 8px 0;
@@ -189,7 +276,9 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  color: var(--primary);
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   transform: translateY(100%);
   transition: transform 0.3s ease;
 }
@@ -205,7 +294,7 @@ body {
   left: 0;
   width: 100%;
   height: 2px;
-  background: var(--primary);
+  background: var(--gradient-1);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.3s ease;
@@ -232,6 +321,9 @@ body {
   visibility: hidden;
   transform: translateY(10px);
   transition: all 0.3s ease;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
 }
 
 .dropdown:hover .dropdown-menu {
@@ -243,7 +335,7 @@ body {
 .dropdown-item {
   display: block;
   padding: 12px 20px;
-  color: var(--text);
+  color: var(--text-primary);
   text-decoration: none;
   border-radius: 8px;
   transition: all 0.2s ease;
@@ -258,7 +350,7 @@ body {
   left: 50%;
   width: 0;
   height: 0;
-  background: var(--primary);
+  background: var(--gradient-1);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: width 0.6s, height 0.6s;
@@ -286,7 +378,7 @@ body {
   padding: 8px 12px;
   border: 1px solid var(--glass-border);
   background: transparent;
-  color: var(--text);
+  color: var(--text-primary);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -301,7 +393,7 @@ body {
   left: 50%;
   width: 0;
   height: 0;
-  background: var(--primary);
+  background: var(--gradient-1);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: width 0.6s, height 0.6s;
@@ -313,10 +405,14 @@ body {
   height: 150px;
 }
 
+.lang-btn:hover {
+  color: white;
+}
+
 .lang-btn.active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: var(--bg-dark);
+  background: var(--gradient-1);
+  border-color: transparent;
+  color: white;
 }
 
 /* Cart button */
@@ -335,12 +431,20 @@ body {
   background: var(--glass-bg);
 }
 
+.cart-btn svg path {
+  stroke: var(--primary);
+}
+
+.cart-btn svg circle {
+  fill: var(--primary);
+}
+
 .cart-count {
   position: absolute;
   top: 0;
   right: 0;
-  background: var(--primary);
-  color: var(--bg-dark);
+  background: var(--gradient-1);
+  color: white;
   font-size: 12px;
   font-weight: bold;
   min-width: 20px;
@@ -366,6 +470,7 @@ body {
   padding: 0 40px;
   position: relative;
   overflow: hidden;
+  margin-top: 80px;
 }
 
 .hero-content {
@@ -376,13 +481,14 @@ body {
 .hero-badge {
   display: inline-block;
   padding: 8px 20px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: var(--gradient-1);
+  color: white;
   border-radius: 40px;
   font-size: 14px;
   letter-spacing: 2px;
   margin-bottom: 30px;
   animation: slideInLeft 1s ease-out;
+  box-shadow: var(--shadow-glow);
 }
 
 .hero-title {
@@ -390,6 +496,7 @@ body {
   font-weight: 900;
   line-height: 1;
   margin-bottom: 20px;
+  color: var(--text-primary);
 }
 
 .line {
@@ -402,7 +509,9 @@ body {
 }
 
 .line-2 {
-  color: var(--primary);
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   animation: slideInUp 1s ease-out 0.4s both;
   position: relative;
   display: inline-block;
@@ -415,9 +524,9 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, var(--primary), transparent);
-  filter: blur(20px);
-  opacity: 0.5;
+  background: var(--gradient-1);
+  filter: blur(30px);
+  opacity: 0.3;
   animation: shimmer 3s infinite;
 }
 
@@ -454,11 +563,31 @@ body {
   font-size: 16px;
   position: relative;
   overflow: hidden;
+  z-index: 1;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  z-index: -1;
+}
+
+.btn:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
 .btn-primary {
-  background: var(--primary);
-  color: var(--bg-dark);
+  background: var(--gradient-1);
+  color: white;
 }
 
 .btn-primary.glow {
@@ -467,7 +596,7 @@ body {
 
 @keyframes glow {
   0%, 100% { box-shadow: 0 0 20px var(--primary); }
-  50% { box-shadow: 0 0 40px var(--primary), 0 0 60px var(--primary); }
+  50% { box-shadow: 0 0 40px var(--primary), 0 0 60px var(--secondary); }
 }
 
 .btn-primary:hover {
@@ -478,12 +607,13 @@ body {
 .btn-outline {
   background: transparent;
   border: 2px solid var(--primary);
-  color: var(--text);
+  color: var(--text-primary);
 }
 
 .btn-outline:hover {
-  background: var(--primary);
-  color: var(--bg-dark);
+  background: var(--gradient-1);
+  border-color: transparent;
+  color: white;
   transform: translateY(-3px);
 }
 
@@ -500,24 +630,32 @@ body {
   font-size: 18px;
   font-weight: bold;
   animation: floating 6s infinite ease-in-out;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  box-shadow: var(--shadow);
 }
 
 .card-1 {
   top: 20%;
   left: 20%;
   animation-delay: 0s;
+  border-top: 3px solid var(--primary);
 }
 
 .card-2 {
   top: 50%;
   right: 20%;
   animation-delay: -2s;
+  border-top: 3px solid var(--secondary);
 }
 
 .card-3 {
   bottom: 20%;
   left: 30%;
   animation-delay: -4s;
+  border-top: 3px solid var(--accent);
 }
 
 @keyframes floating {
@@ -547,7 +685,9 @@ body {
 .stat-number {
   font-size: 48px;
   font-weight: 900;
-  color: var(--primary);
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   position: relative;
   display: inline-block;
 }
@@ -555,6 +695,9 @@ body {
 .stat-number::after {
   content: '+';
   font-size: 24px;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   position: absolute;
   top: 0;
   right: -20px;
@@ -585,7 +728,7 @@ body {
   font-size: 48px;
   font-weight: 800;
   margin-bottom: 40px;
-  background: linear-gradient(135deg, var(--text) 0%, var(--primary) 100%);
+  background: var(--gradient-1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   position: relative;
@@ -599,7 +742,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--text) 100%);
+  background: var(--gradient-2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   opacity: 0;
@@ -623,7 +766,7 @@ body {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 40px;
-  color: var(--text);
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 16px;
@@ -639,7 +782,7 @@ body {
   left: 50%;
   width: 0;
   height: 0;
-  background: var(--primary);
+  background: var(--gradient-1);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: width 0.6s, height 0.6s;
@@ -652,14 +795,14 @@ body {
 }
 
 .filter-tab:hover {
-  color: var(--bg-dark);
-  border-color: var(--primary);
+  color: white;
+  border-color: transparent;
 }
 
 .filter-tab.active {
-  background: var(--primary);
-  color: var(--bg-dark);
-  border-color: var(--primary);
+  background: var(--gradient-1);
+  color: white;
+  border-color: transparent;
   animation: pulse 2s infinite;
 }
 
@@ -678,7 +821,7 @@ body {
 
 /* Product Card */
 .product-card {
-  background: var(--glass-bg);
+  background: var(--card-bg);
   backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   border-radius: 30px;
@@ -689,6 +832,7 @@ body {
   animation: cardAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   position: relative;
   cursor: pointer;
+  box-shadow: var(--shadow);
 }
 
 @keyframes cardAppear {
@@ -705,7 +849,7 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
   transition: left 0.5s ease;
 }
 
@@ -715,7 +859,7 @@ body {
 
 .product-card:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-hover);
   border-color: var(--primary);
 }
 
@@ -741,8 +885,8 @@ body {
   top: 20px;
   right: 20px;
   padding: 8px 16px;
-  background: var(--primary);
-  color: var(--bg-dark);
+  background: var(--gradient-1);
+  color: white;
   border-radius: 30px;
   font-weight: 600;
   font-size: 14px;
@@ -765,7 +909,9 @@ body {
 
 .product-category {
   font-size: 14px;
-  color: var(--primary);
+  background: var(--gradient-2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -778,6 +924,7 @@ body {
   line-height: 1.4;
   position: relative;
   display: inline-block;
+  color: var(--text-primary);
 }
 
 .product-title::after {
@@ -787,7 +934,7 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--primary);
+  background: var(--gradient-1);
   transition: width 0.3s ease;
 }
 
@@ -798,7 +945,9 @@ body {
 .product-price {
   font-size: 28px;
   font-weight: 800;
-  color: var(--primary);
+  background: var(--gradient-3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin: 20px 0;
   position: relative;
   display: inline-block;
@@ -826,10 +975,10 @@ body {
 .btn-buy {
   flex: 1;
   padding: 12px;
-  background: var(--primary);
+  background: var(--gradient-1);
   border: none;
   border-radius: 30px;
-  color: var(--bg-dark);
+  color: white;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -866,7 +1015,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
   z-index: 2000;
   display: flex;
@@ -893,6 +1042,9 @@ body {
   transform: scale(0.9) translateY(20px);
   opacity: 0;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
 }
 
 .modal-overlay.active .modal-container {
@@ -909,7 +1061,7 @@ body {
   border-radius: 50%;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  color: var(--text);
+  color: var(--text-primary);
   font-size: 30px;
   cursor: pointer;
   z-index: 10;
@@ -920,8 +1072,8 @@ body {
 }
 
 .modal-close:hover {
-  background: var(--primary);
-  color: var(--bg-dark);
+  background: var(--gradient-1);
+  color: white;
   transform: rotate(90deg);
 }
 
@@ -944,6 +1096,7 @@ body {
   margin-bottom: 20px;
   position: relative;
   cursor: zoom-in;
+  border: 2px solid var(--glass-border);
 }
 
 .main-image img {
@@ -990,14 +1143,14 @@ body {
 }
 
 .product-info-detail {
-  color: var(--text);
+  color: var(--text-primary);
 }
 
 .product-info-detail h2 {
   font-size: 36px;
   font-weight: 800;
   margin-bottom: 20px;
-  background: linear-gradient(135deg, var(--text) 0%, var(--primary) 100%);
+  background: var(--gradient-1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -1011,16 +1164,17 @@ body {
 
 .product-category-detail {
   padding: 8px 20px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: var(--gradient-2);
+  color: white;
   border-radius: 30px;
-  color: var(--primary);
 }
 
 .product-price-detail {
   font-size: 48px;
   font-weight: 900;
-  color: var(--primary);
+  background: var(--gradient-3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin: 30px 0;
   animation: pulse 2s infinite;
 }
@@ -1056,12 +1210,14 @@ body {
 
 .specs-table td:first-child {
   font-weight: 600;
-  color: var(--primary);
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   width: 40%;
 }
 
 .specs-table td:last-child {
-  color: var(--text);
+  color: var(--text-primary);
 }
 
 /* Benefits */
@@ -1087,7 +1243,9 @@ body {
   content: '✓';
   position: absolute;
   left: 0;
-  color: var(--primary);
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-weight: bold;
   font-size: 20px;
 }
@@ -1106,15 +1264,14 @@ body {
 }
 
 .btn-viber {
-  background: #7360f2;
+  background: var(--gradient-2);
   color: white;
   border: none;
 }
 
 .btn-viber:hover {
-  background: #5e4ad8;
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(115, 96, 242, 0.3);
+  box-shadow: 0 10px 20px rgba(74, 144, 226, 0.3);
 }
 
 /* Cart Sidebar */
@@ -1128,6 +1285,9 @@ body {
   transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border-left: 1px solid var(--glass-border);
 }
 
 .cart-sidebar.open {
@@ -1144,6 +1304,9 @@ body {
 
 .cart-header h3 {
   font-size: 24px;
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .close-cart {
@@ -1152,15 +1315,15 @@ body {
   border-radius: 50%;
   border: 1px solid var(--glass-border);
   background: transparent;
-  color: var(--text);
+  color: var(--text-primary);
   font-size: 24px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .close-cart:hover {
-  background: var(--primary);
-  color: var(--bg-dark);
+  background: var(--gradient-1);
+  color: white;
   transform: rotate(90deg);
 }
 
@@ -1203,10 +1366,13 @@ body {
 .cart-item-info h4 {
   font-size: 16px;
   margin-bottom: 5px;
+  color: var(--text-primary);
 }
 
 .cart-item-price {
-  color: var(--primary);
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-weight: 600;
 }
 
@@ -1222,20 +1388,21 @@ body {
   border-radius: 50%;
   border: 1px solid var(--glass-border);
   background: transparent;
-  color: var(--text);
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .qty-btn:hover {
-  background: var(--primary);
-  color: var(--bg-dark);
+  background: var(--gradient-1);
+  color: white;
+  transform: scale(1.1);
 }
 
 .remove-btn {
   background: transparent;
   border: none;
-  color: var(--text);
+  color: var(--text-primary);
   font-size: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1260,13 +1427,20 @@ body {
   text-align: right;
 }
 
+.total-amount {
+  background: var(--gradient-1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 28px;
+}
+
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(5px);
   z-index: 999;
   opacity: 0;
@@ -1336,8 +1510,8 @@ body {
   position: fixed;
   top: 100px;
   right: 20px;
-  background: var(--primary);
-  color: var(--bg-dark);
+  background: var(--gradient-1);
+  color: white;
   padding: 15px 25px;
   border-radius: 50px;
   z-index: 2000;
@@ -1352,6 +1526,19 @@ body {
   padding: 40px;
   color: var(--text-secondary);
   font-size: 18px;
+}
+
+/* Footer */
+.footer {
+  background: var(--footer-bg);
+  padding: 40px 0;
+  margin-top: 60px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.footer p {
+  text-align: center;
+  color: var(--text-secondary);
 }
 
 /* Responsive */
