@@ -3,6 +3,7 @@ let products = [];
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 let currentFilter = 'all';
 let currentLanguage = 'uk';
+let currentTheme = localStorage.getItem('theme') || 'light';
 
 const VIBER_NUMBER = '+380995371400';
 
@@ -20,6 +21,23 @@ const modalOverlay = document.getElementById('modalOverlay');
 const productModal = document.getElementById('productModal');
 const modalContent = document.getElementById('modalContent');
 const closeModal = document.getElementById('closeModal');
+const themeToggle = document.getElementById('themeToggle');
+
+// Встановлення теми
+function setTheme(theme) {
+  currentTheme = theme;
+  localStorage.setItem('theme', theme);
+  document.body.className = theme + '-theme';
+}
+
+// Перемикання теми
+function toggleTheme() {
+  if (currentTheme === 'light') {
+    setTheme('dark');
+  } else {
+    setTheme('light');
+  }
+}
 
 // Завантаження товарів
 async function loadProducts() {
@@ -395,14 +413,14 @@ function showNotification(message, type = 'success') {
     position: fixed;
     top: 100px;
     right: 20px;
-    background: ${type === 'success' ? '#f1c40f' : '#ff4444'};
-    color: ${type === 'success' ? '#0a0a0f' : 'white'};
+    background: var(--gradient-1);
+    color: white;
     padding: 15px 25px;
     border-radius: 50px;
     z-index: 2000;
     animation: slideInRight 0.3s ease-out;
     font-weight: 600;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    box-shadow: var(--shadow-glow);
   `;
   
   document.body.appendChild(notification);
@@ -467,10 +485,16 @@ function init3DCards() {
 
 // Ініціалізація
 document.addEventListener('DOMContentLoaded', () => {
+  // Встановлюємо тему
+  setTheme(currentTheme);
+  
   loadProducts();
   renderCart();
   updateCartCount();
   parallaxEffect();
+  
+  // Обробник перемикання теми
+  themeToggle?.addEventListener('click', toggleTheme);
   
   // Обробники фільтрів
   document.querySelectorAll('[data-filter]').forEach(btn => {
