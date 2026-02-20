@@ -7,7 +7,7 @@ let currentTheme = localStorage.getItem('theme') || 'light';
 const VIBER_NUMBER = '+380995371400';
 
 const TELEGRAM_TOKEN = '8537676411:AAFsfW7VwQsTubmuLqUbNhHd5IsRjfBGZtg'; 
-const TELEGRAM_CHAT_ID = '8537676411'; 
+const TELEGRAM_CHAT_ID = '1009593325'; // ⚠️ ВСТАВТЕ СЮДИ ПРАВИЛЬНИЙ CHAT ID!
 
 const catalogGrid = document.getElementById('catalog-grid');
 const cartSidebar = document.getElementById('cartSidebar');
@@ -39,31 +39,17 @@ function toggleTheme() {
     showNotification('Тему змінено');
 }
 
-// Завантаження товарів з GitHub
+// Завантаження товарів
 async function loadProducts() {
     try {
-        // Спочатку пробуємо завантажити з GitHub
-        const githubUrl = 'https://github.com/makssuhrov21-glitch/makssuhrov2/blob/main/data/products.json';
         const timestamp = new Date().getTime();
-        
-        let response = await fetch(`${githubUrl}?t=${timestamp}`, {
+        const response = await fetch(`data/products.json?t=${timestamp}`, {
             cache: 'no-store',
             headers: {
                 'Cache-Control': 'no-cache',
                 'Pragma': 'no-cache'
             }
         });
-        
-        if (!response.ok) {
-            // Якщо GitHub не доступний, завантажуємо локально
-            response = await fetch(`data/products.json?t=${timestamp}`, {
-                cache: 'no-store',
-                headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache'
-                }
-            });
-        }
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -74,38 +60,9 @@ async function loadProducts() {
         filterProducts('all');
         animateStats();
         
-        // Перевіряємо оновлення кожні 5 хвилин
-        setTimeout(checkForUpdates, 5 * 60 * 1000);
-        
     } catch (error) {
         console.error('❌ Помилка завантаження:', error);
         showNotification('Помилка завантаження товарів', 'error');
-    }
-}
-
-// Перевірка оновлень на GitHub
-async function checkForUpdates() {
-    try {
-        const githubUrl = 'https://raw.githubusercontent.com/ВАШ_ЛОГІН/НАЗВА_РЕПОЗИТОРІЮ/main/data/products.json';
-        const timestamp = new Date().getTime();
-        
-        const response = await fetch(`${githubUrl}?t=${timestamp}`, {
-            cache: 'no-store'
-        });
-        
-        if (response.ok) {
-            const newProducts = await response.json();
-            
-            // Перевіряємо чи змінились товари
-            if (JSON.stringify(products) !== JSON.stringify(newProducts)) {
-                products = newProducts;
-                filterProducts(currentFilter);
-                showNotification('🔄 Товари оновлено');
-                console.log('🔄 Товари оновлено з GitHub');
-            }
-        }
-    } catch (error) {
-        console.log('Помилка перевірки оновлень:', error);
     }
 }
 
@@ -113,6 +70,8 @@ async function checkForUpdates() {
 async function sendTelegramMessage(message) {
     try {
         const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+        console.log('📤 Відправляю в Telegram...');
+        
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -126,9 +85,19 @@ async function sendTelegramMessage(message) {
         });
         
         const data = await response.json();
-        return data.ok;
+        console.log('📥 Відповідь Telegram:', data);
+        
+        if (data.ok) {
+            showNotification('✅ Замовлення відправлено в Telegram');
+            return true;
+        } else {
+            console.error('❌ Помилка Telegram:', data.description);
+            showNotification(`❌ ${data.description}`, 'error');
+            return false;
+        }
     } catch (error) {
-        console.error('Помилка Telegram:', error);
+        console.error('❌ Помилка з\'єднання:', error);
+        showNotification('❌ Помилка з\'єднання', 'error');
         return false;
     }
 }
@@ -162,67 +131,39 @@ function formatOrderMessage(cart, total) {
     return message;
 }
 
-// Оновлена функція оформлення замовлення
+// Оформлення замовлення
 async function checkout() {
-    if (cart.length === 0) return;
+    if (cart.length === 0) {
+        showNotification('🛒 Кошик порожній', 'error');
+        return;
+    }
     
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    
-    // Формуємо повідомлення
     const message = formatOrderMessage(cart, total);
     
-    // Відправляємо в Telegram
     showNotification('📤 Відправка замовлення...');
     const sent = await sendTelegramMessage(message);
     
     if (sent) {
-        showNotification('✅ Замовлення відправлено в Telegram');
-        
         // Очищаємо кошик
         cart = [];
         saveCart();
+        closeCartSidebar();
         
-        // Відкриваємо Viber через 1 секунду
+        // Відкриваємо Viber
         setTimeout(() => {
             window.open(`viber://chat?number=${encodeURIComponent(VIBER_NUMBER)}`, '_blank');
         }, 1000);
-        
-    } else {
-        showNotification('❌ Помилка відправки. Спробуйте ще раз', 'error');
     }
 }
 
-// Функція додавання товару в адмінці
-async function addProduct(productData) {
-    try {
-        // Спочатку оновлюємо локально
-        const index = products.findIndex(p => p.id === productData.id);
-        if (index >= 0) {
-            products[index] = productData;
-        } else {
-            products.push(productData);
-        }
-        
-        // Відправляємо на GitHub (потрібен API ключ)
-        await syncWithGitHub(products);
-        
-        showNotification('✅ Товар додано та синхронізовано');
-        return true;
-        
-    } catch (error) {
-        console.error('Помилка додавання товару:', error);
-        showNotification('❌ Помилка синхронізації', 'error');
-        return false;
-    }
-}
-
-// Синхронізація з GitHub
-async function syncWithGitHub(data) {
-    // Тут має бути API запит до вашого бекенду
-    // Або використання GitHub API з токеном
-    
-    console.log('Дані готові до синхронізації:', data);
-}
+// Тестова функція
+window.testTelegram = async function() {
+    const testMessage = "🔔 <b>ТЕСТ</b>\nБот працює!";
+    const result = await sendTelegramMessage(testMessage);
+    console.log(result ? '✅ Успішно' : '❌ Помилка');
+    return result;
+};
 
 // Анімація статистики
 function animateStats() {
